@@ -2,29 +2,43 @@
 
 import re
 
-# 1. Target Media Lokal Muria, Jawa Tengah, Keagamaan, dan Nasional
+# 1. Target Media Lokal Muria, Jawa Tengah, Keagamaan, dan Nasional Lengkap
 TARGET_MEDIA = [
+    # Media Lokal Muria & Sekitarnya
     {"name": "MURIANEWS", "domain": "murianews.com", "category": "lokal_muria"},
-    {"name": "Radar Kudus", "domain": "radarkudus.jawapos.com", "category": "lokal_muria"},
+    {"name": "Radar Kudus (Jawa Pos)", "domain": "radarkudus.jawapos.com", "category": "lokal_muria"},
     {"name": "Beta News", "domain": "betanews.id", "category": "lokal_muria"},
     {"name": "Jurnal Pantura", "domain": "jurnalpantura.id", "category": "lokal_muria"},
     {"name": "ISK News (Info Seputar Kudus)", "domain": "isknews.com", "category": "lokal_muria"},
     {"name": "Klikfakta", "domain": "klikfakta.com", "category": "lokal_muria"},
     {"name": "Lintas Kudus", "domain": "lintaskudus.com", "category": "lokal_muria"},
+    {"name": "Kaifa News", "domain": "kaifanews.com", "category": "lokal_muria"},
     {"name": "Zonanews", "domain": "zonanews.id", "category": "lokal_muria"},
+    {"name": "Zonasi ID", "domain": "zonasi.id", "category": "lokal_muria"},
+    {"name": "Infojateng ID", "domain": "infojateng.id", "category": "lokal_muria"},
+    {"name": "LPM Paradigma (Pers Mahasiswa)", "domain": "lpmparadigma.com", "category": "kampus_internal"},
+
+    # Media Regional Jawa Tengah & Disway Group
     {"name": "Suara Merdeka", "domain": "suaramerdeka.com", "category": "regional_jateng"},
     {"name": "Tribun Jateng", "domain": "jateng.tribunnews.com", "category": "regional_jateng"},
-    {"name": "Lingkar Jateng", "domain": "lingkar.news", "category": "regional_jateng"},
+    {"name": "Jateng Pos", "domain": "jatengpos.co.id", "category": "regional_jateng"},
+    {"name": "Koran Lingkar / Lingkar Jateng", "domain": "lingkar.news", "category": "regional_jateng"},
     {"name": "Joglo Jateng", "domain": "joglojateng.com", "category": "regional_jateng"},
-    {"name": "Detik Jateng", "domain": "detik.com", "category": "nasional_regional"},
-    {"name": "Kompas", "domain": "kompas.com", "category": "nasional"},
-    {"name": "NU Online", "domain": "nu.or.id", "category": "keagamaan"},
-    {"name": "Kemenag RI", "domain": "kemenag.go.id", "category": "kementerian"},
-    {"name": "Pendis Kemenag", "domain": "pendis.kemenag.go.id", "category": "kementerian"},
-    {"name": "Berita Satu TV", "domain": "beritasatu.com", "category": "televisi"},
+    {"name": "Disway ID", "domain": "disway.id", "category": "regional_nasional"},
+    {"name": "NU Online Jateng", "domain": "jateng.nu.or.id", "category": "keagamaan"},
+    {"name": "NU Online Pusat", "domain": "nu.or.id", "category": "keagamaan"},
+    {"name": "Viva Jateng / Jogja", "domain": "viva.co.id", "category": "regional_nasional"},
+
+    # Media Televisi & Nasional
+    {"name": "Metro TV", "domain": "metrotvnews.com", "category": "televisi"},
+    {"name": "Berita Satu TV (BTV)", "domain": "beritasatu.com", "category": "televisi"},
     {"name": "Kompas TV", "domain": "kompas.tv", "category": "televisi"},
     {"name": "TV One", "domain": "tvonenews.com", "category": "televisi"},
     {"name": "Nusantara TV", "domain": "nusantaratv.com", "category": "televisi"},
+    {"name": "Detik Jateng / Detikcom", "domain": "detik.com", "category": "nasional_regional"},
+    {"name": "Kompas.com", "domain": "kompas.com", "category": "nasional"},
+    {"name": "Kemenag RI", "domain": "kemenag.go.id", "category": "kementerian"},
+    {"name": "Pendis Kemenag", "domain": "pendis.kemenag.go.id", "category": "kementerian"},
 ]
 
 # 2. Domain Jaringan PTKIN Se-Indonesia
