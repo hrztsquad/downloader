@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import Optional
-from fastapi import APIRouter, Depends, Request, Query, Form
+from fastapi import APIRouter, Depends, Request, Query, Form, BackgroundTasks
 from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -154,11 +154,14 @@ def articles_table(
 
 
 @router.post("/deep-search/trigger")
-def trigger_deep_search(max_items: int = Form(30)):
-    """Memicu Deep Search 2 tahun terakhir dari tombol UI dashboard."""
+def trigger_deep_search(
+    background_tasks: BackgroundTasks,
+    max_items: int = Form(30)
+):
+    """Memicu Deep Search secara asynchronous di background agar tidak timeout di Cloudflare."""
     from app.pipeline import run_deep_search_pipeline
-    res = run_deep_search_pipeline(max_articles=max_items)
-    return RedirectResponse(url=f"/articles?crawled={res.get('saved_count', 0)}", status_code=303)
+    background_tasks.add_task(run_deep_search_pipeline, max_articles=max_items)
+    return RedirectResponse(url="/articles?crawled=background", status_code=303)
 
 
 @router.post("/articles/{article_id}/verify")

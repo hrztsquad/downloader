@@ -77,6 +77,21 @@
         </form>
     </div>
 
+    {% if request.query_params.get('crawled') == 'background' %}
+    <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-pulse">
+        <div class="flex items-center gap-3">
+            <span class="text-indigo-600 text-xl font-bold">⏳</span>
+            <div>
+                <p class="text-xs font-bold text-indigo-900">Deep Search Sedang Berjalan di Latar Belakang (Background Task)</p>
+                <p class="text-[11px] text-indigo-700">Sistem sedang merayapi 18 media online lokal, Google News, dan 286 dosen tanpa menyebabkan timeout Cloudflare. Silakan refresh halaman secara berkala untuk melihat berita-berita baru yang masuk.</p>
+            </div>
+        </div>
+        <a href="/articles" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3.5 py-1.5 rounded-lg text-center transition">
+            🔄 Refresh Data
+        </a>
+    </div>
+    {% endif %}
+
     <!-- Tabel Rekap Berita -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">

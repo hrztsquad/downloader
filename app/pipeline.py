@@ -182,7 +182,7 @@ def run_deep_search_pipeline(max_articles: int = 60) -> Dict[str, Any]:
 
         return {
             "status": "success",
-            "total_found": len(raw_items),
+            "total_found": len(all_raw_items),
             "saved_count": saved_count,
             "skipped_existing": skipped_existing,
             "timestamp": datetime.utcnow().isoformat(),
