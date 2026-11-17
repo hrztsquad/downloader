@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Instagram Kampus | SUKU-Monitor UIN Sunan Kudus{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+    <!-- Header & Sync -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+        <div>
+            <div class="flex items-center gap-2">
+                <h1 class="text-xl font-bold text-slate-800">Instagram Resmi @uinsunankudus_</h1>
+                <span class="text-xs bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full font-semibold">Graph API Aktif</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">
+                45.110 Followers &bull; Pemantauan efektivitas publikasi kampus, interaksi (likes, comments), dan tanggapan audiens warganet.
+            </p>
+        </div>
+        <form action="/instagram/sync" method="POST">
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition">
+                🔄 Tarik Postingan Terbaru
+            </button>
+        </form>
+    </div>
+
+    <!-- Grid Postingan & Komentar -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Kolom Kiri: Postingan (2 Kolom) -->
+        <div class="lg:col-span-2 space-y-4">
+            <h3 class="text-sm font-semibold text-slate-800">Daftar Postingan Terpantau</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for p in posts %}
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                            <span>{{ p.timestamp.strftime('%d %b %Y %H:%M') if p.timestamp else '-' }}</span>
+                            <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{{ p.media_type }}</span>
+                        </div>
+                        <p class="text-xs text-slate-800 line-clamp-4 leading-relaxed whitespace-pre-line">
+                            {{ p.caption or '(Tanpa caption)' }}
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <div class="flex items-center space-x-3 text-slate-600">
+                            <span>❤️ <strong>{{ p.like_count }}</strong></span>
+                            <span>💬 <strong>{{ p.comments_count }}</strong></span>
+                        </div>
+                        {% if p.permalink %}
+                        <a href="{{ p.permalink }}" target="_blank" class="text-purple-600 hover:text-purple-800 font-medium">Buka Post ↗</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-span-2 bg-white p-8 text-center text-xs text-slate-400 rounded-xl border border-slate-200">
+                    Belum ada postingan tersimpan. Silakan klik tombol "Tarik Postingan Terbaru" di atas.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Komentar Audiens (1 Kolom) -->
+        <div class="space-y-4">
+            <h3 class="text-sm font-semibold text-slate-800">Komentar Audiens Warganet</h3>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm divide-y divide-slate-100 max-h-[600px] overflow-y-auto">
+                {% for c in comments %}
+                <div class="p-3.5 hover:bg-slate-50 transition text-xs">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-semibold text-purple-900">@{{ c.username or 'warganet' }}</span>
+                        <span class="text-[10px] text-slate-400">{{ c.timestamp.strftime('%d/%m/%Y') if c.timestamp else '' }}</span>
+                    </div>
+                    <p class="text-slate-700 leading-snug">{{ c.text }}</p>
+                </div>
+                {% else %}
+                <div class="p-6 text-center text-xs text-slate-400">
+                    Belum ada komentar yang terekam.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

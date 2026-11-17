@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SUKU-Monitor | UIN Sunan Kudus{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-emerald-800 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl font-bold tracking-tight">🏛️ SUKU-Monitor</span>
+                    <span class="text-xs bg-emerald-700 text-emerald-100 px-2.5 py-1 rounded-full font-medium">UIN Sunan Kudus</span>
+                    <span class="text-xs bg-slate-800 text-slate-200 px-2 py-0.5 rounded font-mono">Netral & Terbuka</span>
+                </div>
+                <div class="flex items-center space-x-4 text-sm font-medium">
+                    <a href="/" class="hover:text-emerald-200 px-3 py-1.5 rounded transition">Dashboard</a>
+                    <a href="/articles" class="hover:text-emerald-200 px-3 py-1.5 rounded transition">Rekap Berita</a>
+                    <a href="/instagram" class="hover:text-emerald-200 px-3 py-1.5 rounded transition">Instagram Kampus</a>
+                    <a href="/export/excel" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow transition">📥 Unduh Excel</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            SUKU-Monitor &copy; 2026 UIN Sunan Kudus &bull; Sistem Monitoring Publikasi & Opini Media Independen &bull; Didukung Gemini AI & Instagram Graph API
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
