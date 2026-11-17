@@ -53,6 +53,37 @@ def build_deep_search_queries() -> List[Dict[str, str]]:
                 "category": "kampus_2tahun",
             })
 
+    # 1B. Query Monumental & Bersejarah Kampus (Wisuda, Menag, Dies Natalis, Gedung Baru, Alih Status)
+    monumental_events = [
+        "Wisuda UIN Sunan Kudus",
+        "Wisuda IAIN Kudus",
+        "Wisuda STAIN Kudus",
+        "Menteri Agama UIN Sunan Kudus",
+        "Menteri Agama IAIN Kudus",
+        "Kunjungan Menteri Agama UIN Kudus",
+        "Kunjungan Menteri Agama IAIN Kudus",
+        "Kunjungan Menteri Agama STAIN Kudus",
+        "Menag UIN Sunan Kudus",
+        "Menag IAIN Kudus",
+        "Yaqut Cholil Qoumas IAIN Kudus",
+        "Nasaruddin Umar UIN Kudus",
+        "Pengukuhan Guru Besar UIN Sunan Kudus",
+        "Pengukuhan Guru Besar IAIN Kudus",
+        "Transformasi IAIN Kudus jadi UIN",
+        "Alih Status IAIN Kudus jadi UIN Sunan Kudus",
+        "Peresmian Gedung UIN Sunan Kudus",
+        "Gedung Kuliah Terpadu UIN Kudus",
+        "Dies Natalis UIN Kudus",
+        "Dies Natalis IAIN Kudus",
+        "Sidang Senat Terbuka UIN Sunan Kudus",
+        "KKN UIN Sunan Kudus",
+        "KKN IAIN Kudus",
+    ]
+    for ev in monumental_events:
+        queries.append({"q": ev, "category": "monumental_kampus"})
+        # Tambahkan juga pencarian khusus di Kemenag
+        queries.append({"q": f"{ev} site:kemenag.go.id", "category": "monumental_kemenag"})
+
     # 2. Query 18 Media Lokal & Nasional
     for m in TARGET_MEDIA:
         domain = m["domain"]
