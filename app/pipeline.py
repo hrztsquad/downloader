@@ -109,17 +109,30 @@ def init_lecturers_table(db: Session):
 
 
 def run_deep_search_pipeline(max_articles: int = 60) -> Dict[str, Any]:
-    """Menjalankan Deep Search 4 Divisi (Media lokal, Dosen, Sosmed, PTKIN)."""
+    """Menjalankan Deep Search 4 Divisi (Media lokal, Dosen, Sosmed, PTKIN).
+    Menggabungkan Direct Landing Page Search + Aggregator.
+    """
     from app.crawlers.deep_search import execute_deep_search
+    from app.crawlers.direct_media import search_direct_media
     
     db = SessionLocal()
     try:
         init_lecturers_table(db)
-        raw_items = execute_deep_search(max_queries=100)
+
+        # 1. Ambil artikel dari Direct Media Search (100% Landing Page Asli Tanpa Google)
+        direct_items = []
+        for term in ["UIN Sunan Kudus", "IAIN Kudus", "Wisuda UIN Kudus", "Rektor Abdurrohman Kasdi"]:
+            direct_items.extend(search_direct_media(term))
+
+        # 2. Ambil artikel dari Google News & Aggregator
+        agg_items = execute_deep_search(max_queries=60)
+
+        # Gabungkan keduanya, prioritaskan direct_items (landing page asli murni)
+        all_raw_items = direct_items + agg_items
         saved_count = 0
         skipped_existing = 0
 
-        for item in raw_items:
+        for item in all_raw_items:
             if saved_count >= max_articles:
                 break
 
@@ -133,13 +146,17 @@ def run_deep_search_pipeline(max_articles: int = 60) -> Dict[str, Any]:
             extracted = extract_article_content(raw_url)
             content = extracted.get("content", "")
             content_hash = extracted.get("content_hash", "")
+            final_landing_url = extracted.get("final_url", raw_url)
+
+            # Jika URL hasil ekstraksi mengarah ke landing page asli, gunakan final_landing_url
+            chosen_url = final_landing_url if ("google.com" not in final_landing_url and final_landing_url) else raw_url
 
             # Klasifikasi via Gemini (dengan fallback rules jika kuota habis)
             title = item["title"]
             classification = classify_article(title=title, content=content)
 
             article = Article(
-                url=raw_url,
+                url=chosen_url,
                 title=title,
                 source_name=item["source_name"],
                 source_type=item.get("source_type", "media_online"),
