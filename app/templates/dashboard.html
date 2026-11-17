@@ -11,13 +11,21 @@
             <h1 class="text-xl font-bold text-slate-800">Ringkasan Monitoring Publikasi</h1>
             <p class="text-xs text-slate-500 mt-1">Pemantauan netral media online, Google News, dan media sosial resmi kampus</p>
         </div>
-        <form action="/crawl/trigger" method="POST" class="flex items-center gap-2">
-            <input type="text" name="keyword" value="UIN Sunan Kudus" class="text-xs border border-slate-300 rounded-lg px-3 py-2 w-48 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-            <input type="hidden" name="max_items" value="5">
-            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2 rounded-lg font-medium shadow-sm transition">
-                ⚡ Ambil Berita Baru
-            </button>
-        </form>
+        <div class="flex items-center gap-2">
+            <form action="/crawl/trigger" method="POST" class="flex items-center gap-1">
+                <input type="text" name="keyword" value="UIN Sunan Kudus" class="text-xs border border-slate-300 rounded-lg px-2.5 py-2 w-36 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <input type="hidden" name="max_items" value="5">
+                <button type="submit" class="bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm transition" title="Cari berita terkini">
+                    ⚡ Update Berita
+                </button>
+            </form>
+            <form action="/deep-search/trigger" method="POST">
+                <input type="hidden" name="max_items" value="30">
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3.5 py-2 rounded-lg font-semibold shadow-sm transition flex items-center gap-1.5" title="Mencakup Google News, Kemenag, Muria, dan riwayat 2 tahun terakhir">
+                    🔍 Deep Search (2 Tahun)
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Alert Isu Sensitif (Jika Ada) -->

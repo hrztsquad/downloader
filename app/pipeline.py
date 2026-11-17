@@ -93,6 +93,72 @@ def run_pipeline_for_keyword(db: Session, keyword: str, max_articles: int = 15) 
     return saved_count
 
 
+def run_deep_search_pipeline(max_articles: int = 50) -> Dict[str, Any]:
+    """Menjalankan Deep Search 2 tahun terakhir dan domain spesifik,
+    lalu mengekstrak dan mengklasifikasikan artikel yang belum tersimpan.
+    """
+    from app.crawlers.deep_search import deep_search_google_news
+    
+    db = SessionLocal()
+    try:
+        raw_items = deep_search_google_news(include_history_2years=True)
+        saved_count = 0
+        skipped_existing = 0
+
+        for item in raw_items:
+            if saved_count >= max_articles:
+                break
+
+            raw_url = item["url"]
+            existing = db.query(Article).filter(Article.url == raw_url).first()
+            if existing:
+                skipped_existing += 1
+                continue
+
+            # Ekstraksi konten
+            extracted = extract_article_content(raw_url)
+            content = extracted.get("content", "")
+            content_hash = extracted.get("content_hash", "")
+
+            # Klasifikasi via Gemini (dengan fallback rules jika kuota habis)
+            title = item["title"]
+            classification = classify_article(title=title, content=content)
+
+            article = Article(
+                url=raw_url,
+                title=title,
+                source_name=item["source_name"],
+                source_type=item.get("source_type", "media_online"),
+                author=extracted.get("author"),
+                published_at=item["published_at"],
+                crawled_at=datetime.utcnow(),
+                content=content,
+                content_hash=content_hash,
+                summary=classification.get("summary"),
+                sentiment=classification.get("sentiment", "netral"),
+                sentiment_score=classification.get("sentiment_score", 0.0),
+                sentiment_reason=classification.get("sentiment_reason"),
+                is_sensitive=classification.get("is_sensitive", False),
+                sensitive_category=classification.get("sensitive_category"),
+                sensitive_reason=classification.get("sensitive_reason"),
+                topic=classification.get("topic", "lainnya"),
+                matched_keyword=item.get("matched_keyword"),
+            )
+            db.add(article)
+            db.commit()
+            saved_count += 1
+
+        return {
+            "status": "success",
+            "total_found": len(raw_items),
+            "saved_count": saved_count,
+            "skipped_existing": skipped_existing,
+            "timestamp": datetime.utcnow().isoformat(),
+        }
+    finally:
+        db.close()
+
+
 def run_full_crawler_cycle(max_per_keyword: int = 10) -> Dict[str, Any]:
     """Menjalankan crawling lengkap untuk semua kata kunci yang aktif."""
     db = SessionLocal()

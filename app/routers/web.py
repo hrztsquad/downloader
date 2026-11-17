@@ -93,6 +93,8 @@ def articles_table(
     sentiment: Optional[str] = Query(None),
     sensitive: Optional[str] = Query(None),
     topic: Optional[str] = Query(None),
+    year: Optional[str] = Query(None),
+    limit: int = Query(100),
     db: Session = Depends(get_db),
 ):
     """Halaman tabel rekap berita dengan filter lengkap (Modul 2)."""
@@ -108,8 +110,15 @@ def articles_table(
         query = query.filter(Article.is_sensitive == False)
     if topic and topic != "all":
         query = query.filter(Article.topic == topic)
+    if year and year != "all":
+        try:
+            yr_int = int(year)
+            query = query.filter(func.strftime('%Y', Article.published_at) == str(yr_int))
+        except Exception:
+            pass
 
-    articles = query.order_by(desc(Article.published_at)).limit(200).all()
+    articles = query.order_by(desc(Article.published_at)).limit(limit).all()
+    total_found = query.count()
 
     return templates.TemplateResponse(
         request=request,
@@ -120,8 +129,19 @@ def articles_table(
             "selected_sentiment": sentiment or "all",
             "selected_sensitive": sensitive or "all",
             "selected_topic": topic or "all",
+            "selected_year": year or "all",
+            "total_found": total_found,
+            "limit": limit,
         },
     )
+
+
+@router.post("/deep-search/trigger")
+def trigger_deep_search(max_items: int = Form(30)):
+    """Memicu Deep Search 2 tahun terakhir dari tombol UI dashboard."""
+    from app.pipeline import run_deep_search_pipeline
+    res = run_deep_search_pipeline(max_articles=max_items)
+    return RedirectResponse(url=f"/articles?crawled={res.get('saved_count', 0)}", status_code=303)
 
 
 @router.post("/articles/{article_id}/verify")
