@@ -93,15 +93,29 @@ def run_pipeline_for_keyword(db: Session, keyword: str, max_articles: int = 15) 
     return saved_count
 
 
-def run_deep_search_pipeline(max_articles: int = 50) -> Dict[str, Any]:
-    """Menjalankan Deep Search 2 tahun terakhir dan domain spesifik,
-    lalu mengekstrak dan mengklasifikasikan artikel yang belum tersimpan.
-    """
-    from app.crawlers.deep_search import deep_search_google_news
+def init_lecturers_table(db: Session):
+    """Mengisi tabel dosen jika masih kosong."""
+    from app.models.entities import Lecturer
+    from app.data.sources import get_curated_lecturers
+
+    if db.query(Lecturer).count() == 0:
+        for lec in get_curated_lecturers():
+            db.add(Lecturer(
+                full_name=lec["full_name"],
+                clean_name=lec["clean_name"],
+                alias=lec["alias"],
+            ))
+        db.commit()
+
+
+def run_deep_search_pipeline(max_articles: int = 60) -> Dict[str, Any]:
+    """Menjalankan Deep Search 4 Divisi (Media lokal, Dosen, Sosmed, PTKIN)."""
+    from app.crawlers.deep_search import execute_deep_search
     
     db = SessionLocal()
     try:
-        raw_items = deep_search_google_news(include_history_2years=True)
+        init_lecturers_table(db)
+        raw_items = execute_deep_search(max_queries=100)
         saved_count = 0
         skipped_existing = 0
 
@@ -143,6 +157,7 @@ def run_deep_search_pipeline(max_articles: int = 50) -> Dict[str, Any]:
                 sensitive_reason=classification.get("sensitive_reason"),
                 topic=classification.get("topic", "lainnya"),
                 matched_keyword=item.get("matched_keyword"),
+                lecturer_name=item.get("lecturer_name"),
             )
             db.add(article)
             db.commit()

@@ -94,10 +94,14 @@ def articles_table(
     sensitive: Optional[str] = Query(None),
     topic: Optional[str] = Query(None),
     year: Optional[str] = Query(None),
-    limit: int = Query(100),
+    media: Optional[str] = Query(None),
+    lecturer: Optional[str] = Query(None),
+    limit: int = Query(250),
     db: Session = Depends(get_db),
 ):
     """Halaman tabel rekap berita dengan filter lengkap (Modul 2)."""
+    from app.models.entities import Lecturer
+
     query = db.query(Article)
 
     if q:
@@ -110,6 +114,10 @@ def articles_table(
         query = query.filter(Article.is_sensitive == False)
     if topic and topic != "all":
         query = query.filter(Article.topic == topic)
+    if media and media != "all":
+        query = query.filter(Article.source_name.ilike(f"%{media}%"))
+    if lecturer and lecturer != "all":
+        query = query.filter(Article.lecturer_name == lecturer)
     if year and year != "all":
         try:
             yr_int = int(year)
@@ -119,6 +127,11 @@ def articles_table(
 
     articles = query.order_by(desc(Article.published_at)).limit(limit).all()
     total_found = query.count()
+
+    # Daftar media unik untuk dropdown filter
+    media_list = [m[0] for m in db.query(Article.source_name).distinct().all() if m[0]]
+    # Daftar dosen untuk dropdown filter
+    lecturers_list = db.query(Lecturer).order_by(Lecturer.clean_name).all()
 
     return templates.TemplateResponse(
         request=request,
@@ -130,6 +143,10 @@ def articles_table(
             "selected_sensitive": sensitive or "all",
             "selected_topic": topic or "all",
             "selected_year": year or "all",
+            "selected_media": media or "all",
+            "selected_lecturer": lecturer or "all",
+            "media_list": media_list,
+            "lecturers_list": lecturers_list,
             "total_found": total_found,
             "limit": limit,
         },
@@ -189,7 +206,7 @@ def export_excel(db: Session = Depends(get_db)):
 
     headers = [
         "ID", "Tanggal", "Media", "Judul Berita", "URL",
-        "Sentimen", "Skor Sentimen", "Alasan Sentimen",
+        "Dosen Terkait", "Sentimen", "Skor Sentimen", "Alasan Sentimen",
         "Sensitif?", "Kategori Sensitif", "Alasan Sensitif", "Topik", "Ringkasan"
     ]
     ws.append(headers)
@@ -201,6 +218,7 @@ def export_excel(db: Session = Depends(get_db)):
             a.source_name,
             a.title,
             a.url,
+            a.lecturer_name or "-",
             a.sentiment,
             a.sentiment_score,
             a.sentiment_reason,

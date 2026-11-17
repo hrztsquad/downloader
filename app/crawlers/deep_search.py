@@ -1,12 +1,11 @@
 """Modul Deep Search multi-sudut dan multi-mesin untuk SUKU-Monitor.
 
 Mencakup:
-1. Windowed Time Crawl: Memecah rentang waktu 2 tahun terakhir (2024 - 2026) per kuartal/semester
-   agar Google News tidak membatasi output hanya 10-60 berita terbaru.
-2. Multi-Entity Keywords: Mencari variasi 'UIN Sunan Kudus', 'UIN Kudus', 'IAIN Kudus',
-   'STAIN Kudus', nama Rektor, PMB, serta dosen/tendik.
-3. Portal-Targeted Search: Pencarian langsung ke portal lokal Muria (Murianews, Suara Merdeka,
-   Radar Kudus, Kemenag RI, dan jaringan PTKIN).
+1. Windowed Time Crawl: Memecah rentang waktu 2 tahun terakhir (2024 - 2026) per semester.
+2. Multi-Entity Keywords: Mencari variasi 'UIN Sunan Kudus', 'UIN Kudus', 'IAIN Kudus', 'STAIN Kudus'.
+3. 18 Target Media Lokal & Nasional: Murianews, Radar Kudus, Beta News, Jurnal Pantura,
+   ISK News, Klikfakta, Suara Merdeka, Tribun Jateng, Lingkar Jateng, Zonanews, Lintas Kudus, dll.
+4. 250+ Dosen & Pimpinan: Pencarian nama dosen + konteks Kudus/UIN/IAIN di media massa dan PTKIN.
 """
 
 import os
@@ -15,6 +14,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Any, Set
 import feedparser
 import httpx
+from app.data.sources import TARGET_MEDIA, PTKIN_DOMAINS, get_curated_lecturers
 
 for env_key in ("NO_PROXY", "no_proxy"):
     if env_key in os.environ and "[::1]" in os.environ[env_key]:
@@ -22,9 +22,7 @@ for env_key in ("NO_PROXY", "no_proxy"):
 
 
 def generate_time_windows(years: int = 2, step_months: int = 6) -> List[tuple]:
-    """Menghasilkan pasangan (start_date, end_date) dalam format YYYY-MM-DD
-    selama N tahun terakhir untuk memecah query.
-    """
+    """Menghasilkan pasangan (start_date, end_date) format YYYY-MM-DD."""
     windows = []
     now = datetime.utcnow()
     total_steps = (years * 12) // step_months
@@ -40,65 +38,73 @@ def generate_time_windows(years: int = 2, step_months: int = 6) -> List[tuple]:
     return windows
 
 
-def deep_search_google_news(
-    base_keywords: List[str] = None,
-    include_history_2years: bool = True,
-    target_domains: List[str] = None,
-) -> List[Dict[str, Any]]:
-    """Menjalankan Deep Search Google News dengan pemecahan jendela waktu 2 tahun
-    dan pencarian terarah ke domain-domain penting.
-    """
-    if base_keywords is None:
-        base_keywords = [
-            '"UIN Sunan Kudus"',
-            '"UIN Kudus"',
-            '"IAIN Kudus"',
-            '"STAIN Kudus"',
-            '"Rektor UIN Sunan Kudus"',
-            '"Rektor IAIN Kudus"',
-            '"PMB UIN Kudus"',
-            '"PMB IAIN Kudus"',
-        ]
-
+def build_deep_search_queries() -> List[Dict[str, str]]:
+    """Membangun matriks query lengkap untuk 4 divisi robot."""
     queries = []
 
-    # 1. Query dasar
-    for kw in base_keywords:
-        queries.append(kw)
+    # 1. Query Dasar & Windowing Waktu 2 Tahun
+    windows = generate_time_windows(years=2, step_months=6)
+    core_terms = ['"UIN Sunan Kudus"', '"UIN Kudus"', '"IAIN Kudus"', '"STAIN Kudus"']
+    for term in core_terms:
+        queries.append({"q": term, "category": "kampus_umum"})
+        for start, end in windows:
+            queries.append({
+                "q": f"{term} after:{start} before:{end}",
+                "category": "kampus_2tahun",
+            })
 
-    # 2. Query jendela waktu (2 tahun ke belakang per 6 bulan)
-    if include_history_2years:
-        windows = generate_time_windows(years=2, step_months=6)
-        core_entities = ['"UIN Sunan Kudus"', '"IAIN Kudus"']
-        for ent in core_entities:
-            for start, end in windows:
-                queries.append(f"{ent} after:{start} before:{end}")
+    # 2. Query 18 Media Lokal & Nasional
+    for m in TARGET_MEDIA:
+        domain = m["domain"]
+        queries.append({
+            "q": f'("UIN Kudus" OR "IAIN Kudus" OR "Sunan Kudus" OR "STAIN Kudus") site:{domain}',
+            "category": f"media_{m['category']}",
+            "source_hint": m["name"],
+        })
 
-    # 3. Query terarah ke domain lokal & Kemenag
-    domains = target_domains or [
-        "murianews.com",
-        "suaramerdeka.com",
-        "kemenag.go.id",
-        "pendis.kemenag.go.id",
-        "radarkudus.jawapos.com",
-    ]
-    for d in domains:
-        queries.append(f'("UIN Kudus" OR "IAIN Kudus" OR "UIN Sunan Kudus") site:{d}')
+    # 3. Query Jaringan PTKIN Se-Indonesia
+    for pt in PTKIN_DOMAINS:
+        queries.append({
+            "q": f'("UIN Sunan Kudus" OR "IAIN Kudus" OR "UIN Kudus") site:{pt["domain"]}',
+            "category": "ptkin_network",
+            "source_hint": pt["name"],
+        })
 
-    # Eksekusi pencarian
+    # 4. Query Nama Dosen Terpilih (Nama Inti + Konteks Kudus)
+    lecturers = get_curated_lecturers()
+    for lec in lecturers:
+        clean = lec["clean_name"]
+        alias = lec["alias"]
+        if alias:
+            q_lec = f'("{clean}" OR "{alias}") ("Kudus" OR "UIN" OR "IAIN")'
+        else:
+            q_lec = f'"{clean}" ("Kudus" OR "UIN" OR "IAIN")'
+
+        queries.append({
+            "q": q_lec,
+            "category": "dosen",
+            "lecturer_name": lec["full_name"],
+        })
+
+    return queries
+
+
+def execute_deep_search(max_queries: int = 150) -> List[Dict[str, Any]]:
+    """Mengeksekusi Deep Search dan menghasilkan daftar metadata artikel unik."""
+    all_queries = build_deep_search_queries()
     results = []
     seen_urls: Set[str] = set()
 
     with httpx.Client(timeout=15, follow_redirects=True) as client:
-        for q in queries:
-            encoded_query = urllib.parse.quote(q)
+        for q_obj in all_queries[:max_queries]:
+            q_text = q_obj["q"]
+            encoded_query = urllib.parse.quote(q_text)
             rss_url = f"https://news.google.com/rss/search?q={encoded_query}&hl=id&gl=ID&ceid=ID:id"
 
             try:
                 resp = client.get(rss_url)
                 feed = feedparser.parse(resp.text)
             except Exception as e:
-                print(f"[WARN] Deep search feed gagal untuk '{q[:40]}': {e}")
                 continue
 
             for entry in feed.entries:
@@ -108,7 +114,7 @@ def deep_search_google_news(
                 seen_urls.add(link)
 
                 title = entry.get("title", "")
-                source_name = "Media Online"
+                source_name = q_obj.get("source_hint", "Media Online")
                 if " - " in title:
                     parts = title.rsplit(" - ", 1)
                     title = parts[0].strip()
@@ -129,9 +135,10 @@ def deep_search_google_news(
                     "url": link,
                     "title": title,
                     "source_name": source_name,
-                    "source_type": "media_online",
+                    "source_type": q_obj.get("category", "media_online"),
                     "published_at": pub_date,
-                    "matched_keyword": q,
+                    "matched_keyword": q_text,
+                    "lecturer_name": q_obj.get("lecturer_name"),
                 })
 
     return results

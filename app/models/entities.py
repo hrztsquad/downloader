@@ -55,6 +55,18 @@ class Article(Base):
 
     # Entitas yang terdeteksi
     detected_entities = Column(Text, nullable=True)  # JSON-string daftar nama dosen/pejabat
+    lecturer_name = Column(String(200), nullable=True, index=True)  # Nama dosen terkait jika ada
+
+
+class Lecturer(Base):
+    """Tabel database profil dosen & pimpinan UIN Sunan Kudus."""
+    __tablename__ = "lecturers"
+
+    id = Column(Integer, primary_key=True)
+    full_name = Column(String(250), unique=True, nullable=False)
+    clean_name = Column(String(200), nullable=False, index=True)
+    alias = Column(String(100), nullable=True, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 
 class IgMedia(Base):
