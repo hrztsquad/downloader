@@ -53,7 +53,52 @@ def build_deep_search_queries() -> List[Dict[str, str]]:
                 "category": "kampus_2tahun",
             })
 
-    # 1B. Query Monumental & Bersejarah Kampus (Wisuda, Menag, Dies Natalis, Gedung Baru, Alih Status)
+    # 1B. Query KKN (Kuliah Kerja Nyata) & Pengabdian Mahasiswa
+    kkn_queries = [
+        '"KKN UIN Sunan Kudus"',
+        '"KKN IAIN Kudus"',
+        '"KKN STAIN Kudus"',
+        '"KKN" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"Mahasiswa KKN" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"Posko KKN" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"KKN Moderasi Beragama" ("UIN Kudus" OR "IAIN Kudus")',
+        '"KKN Terintegrasi" ("UIN Kudus" OR "IAIN Kudus")',
+        '"PPL" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"PLP" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        # Kompasiana & Kumparan khusus KKN (Sarang artikel KKN mahasiswa)
+        'site:kompasiana.com "KKN" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        'site:kompasiana.com "PPL" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        'site:kompasiana.com "PLP" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        'site:kumparan.com "KKN" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+    ]
+    for kq in kkn_queries:
+        queries.append({"q": kq, "category": "kkn_pengabdian"})
+
+    # 1C. Query Jurnal, Riset, Publikasi Ilmiah & Pengabdian Dosen
+    academic_queries = [
+        '"Jurnal UIN Sunan Kudus"',
+        '"Jurnal IAIN Kudus"',
+        '"Jurnal STAIN Kudus"',
+        '"Jurnal" ("UIN Kudus" OR "IAIN Kudus" OR "Sunan Kudus")',
+        '"Pengabdian Masyarakat" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"Pengabdian Kepada Masyarakat" ("UIN Kudus" OR "IAIN Kudus")',
+        '"Penelitian Dosen" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"Karya Dosen" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"Seminar Nasional" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"Konferensi" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        '"Call for Paper" ("UIN Kudus" OR "IAIN Kudus")',
+        # Kompasiana & Citizen media khusus Dosen & Jurnal
+        'site:kompasiana.com "dosen" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        'site:kompasiana.com "jurnal" ("UIN Sunan Kudus" OR "IAIN Kudus")',
+        'site:kompasiana.com "UIN Sunan Kudus"',
+        'site:kompasiana.com "IAIN Kudus"',
+        'site:kumparan.com "UIN Sunan Kudus"',
+        'site:idntimes.com "UIN Sunan Kudus"',
+    ]
+    for aq in academic_queries:
+        queries.append({"q": aq, "category": "jurnal_akademik"})
+
+    # 1D. Query Monumental & Bersejarah Kampus (Wisuda, Menag, Dies Natalis, Gedung Baru, Alih Status)
     monumental_events = [
         "Wisuda UIN Sunan Kudus",
         "Wisuda IAIN Kudus",
@@ -76,8 +121,6 @@ def build_deep_search_queries() -> List[Dict[str, str]]:
         "Dies Natalis UIN Kudus",
         "Dies Natalis IAIN Kudus",
         "Sidang Senat Terbuka UIN Sunan Kudus",
-        "KKN UIN Sunan Kudus",
-        "KKN IAIN Kudus",
     ]
     for ev in monumental_events:
         queries.append({"q": ev, "category": "monumental_kampus"})

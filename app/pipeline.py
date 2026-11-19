@@ -15,8 +15,17 @@ DEFAULT_KEYWORDS = [
     ("UIN Kudus", "kampus"),
     ("IAIN Kudus", "kampus"),
     ("STAIN Kudus", "kampus"),
+    ("KKN UIN Sunan Kudus", "kkn"),
+    ("KKN IAIN Kudus", "kkn"),
+    ("KKN STAIN Kudus", "kkn"),
+    ("Jurnal UIN Sunan Kudus", "akademik"),
+    ("Jurnal IAIN Kudus", "akademik"),
+    ("Pengabdian Masyarakat UIN Kudus", "pengabdian"),
+    ("Wisuda UIN Sunan Kudus", "monumental"),
+    ("Kunjungan Menteri Agama UIN Kudus", "kementerian"),
     ("PMB UIN Kudus", "pmb"),
     ("Rektor UIN Sunan Kudus", "pimpinan"),
+    ("Dosen UIN Kudus", "dosen"),
     ("Mahasiswa UIN Kudus", "kampus"),
 ]
 

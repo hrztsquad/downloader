@@ -20,20 +20,41 @@
                     Pemantauan netral terintegrasi: mengukur reputasi institusi melalui <em>Net Sentiment Score</em> (NSS), persebaran <em>Share of Voice</em> (SoV), tren volume pemberitaan, dan jejaring relasi media-dosen-isu.
                 </p>
             </div>
-            <div class="flex flex-wrap items-center gap-2">
-                <form action="/crawl/trigger" method="POST" class="flex items-center gap-1">
-                    <input type="text" name="keyword" value="UIN Sunan Kudus" class="text-xs bg-slate-800 border border-slate-700 text-white rounded-lg px-2.5 py-2 w-32 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                    <input type="hidden" name="max_items" value="5">
-                    <button type="submit" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm transition" title="Cari berita terkini">
-                        ⚡ Update
+            <div class="flex flex-col gap-2 items-end">
+                <div class="flex flex-wrap items-center gap-2">
+                    <form action="/crawl/trigger" method="POST" id="quickCrawlForm" class="flex items-center gap-1">
+                        <input type="text" id="crawlKeywordInput" name="keyword" value="KKN UIN Sunan Kudus" class="text-xs bg-slate-800 border border-slate-700 text-white rounded-lg px-2.5 py-2 w-44 focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Kata kunci...">
+                        <input type="hidden" name="max_items" value="10">
+                        <button type="submit" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm transition" title="Cari berita terkini">
+                            ⚡ Crawl
+                        </button>
+                    </form>
+                    <form action="/deep-search/trigger" method="POST">
+                        <input type="hidden" name="max_items" value="60">
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg font-semibold shadow-sm transition flex items-center gap-1.5" title="Mencakup Google News, Kompasiana, Kemenag, Muria, KKN, Jurnal, dan riwayat 2 tahun">
+                            🔍 Deep Search Lengkap (2 Tahun + KKN & Kompasiana)
+                        </button>
+                    </form>
+                </div>
+                <!-- Quick Keyword Presets -->
+                <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+                    <span class="text-slate-400">Pencarian Cepat:</span>
+                    <button type="button" onclick="setQuickKeyword('KKN UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-emerald-300 hover:text-white px-2 py-0.5 rounded border border-emerald-500/30 transition">
+                        🌾 KKN UIN Kudus
                     </button>
-                </form>
-                <form action="/deep-search/trigger" method="POST">
-                    <input type="hidden" name="max_items" value="30">
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg font-semibold shadow-sm transition flex items-center gap-1.5" title="Mencakup Google News, Kemenag, Muria, dan riwayat 2 tahun terakhir">
-                        🔍 Deep Search (2 Tahun)
+                    <button type="button" onclick="setQuickKeyword('KKN IAIN Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-emerald-300 hover:text-white px-2 py-0.5 rounded border border-emerald-500/30 transition">
+                        🌾 KKN IAIN Kudus
                     </button>
-                </form>
+                    <button type="button" onclick="setQuickKeyword('site:kompasiana.com UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-amber-300 hover:text-white px-2 py-0.5 rounded border border-amber-500/30 transition">
+                        ✍️ Kompasiana KKN/Dosen
+                    </button>
+                    <button type="button" onclick="setQuickKeyword('Jurnal UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-sky-300 hover:text-white px-2 py-0.5 rounded border border-sky-500/30 transition">
+                        📚 Jurnal & Riset
+                    </button>
+                    <button type="button" onclick="setQuickKeyword('Wisuda UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-purple-300 hover:text-white px-2 py-0.5 rounded border border-purple-500/30 transition">
+                        🎓 Wisuda
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -454,6 +475,15 @@
             }
         };
         new vis.Network(container, dataNetwork, options);
+    }
+
+    // Helper untuk tombol preset pencarian cepat (KKN, Kompasiana, Jurnal, Wisuda)
+    function setQuickKeyword(kw) {
+        const inp = document.getElementById('crawlKeywordInput');
+        if (inp) {
+            inp.value = kw;
+            document.getElementById('quickCrawlForm').submit();
+        }
     }
 </script>
 {% endblock %}

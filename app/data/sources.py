@@ -29,6 +29,15 @@ TARGET_MEDIA = [
     {"name": "NU Online Pusat", "domain": "nu.or.id", "category": "keagamaan"},
     {"name": "Viva Jateng / Jogja", "domain": "viva.co.id", "category": "regional_nasional"},
 
+    # Media Komunitas / Citizen Journalism & Publikasi Artikel
+    {"name": "Kompasiana", "domain": "kompasiana.com", "category": "citizen_media"},
+    {"name": "Kumparan", "domain": "kumparan.com", "category": "citizen_media"},
+    {"name": "IDN Times", "domain": "idntimes.com", "category": "citizen_media"},
+    {"name": "Times Indonesia", "domain": "timesindonesia.co.id", "category": "nasional_regional"},
+    {"name": "Republika", "domain": "republika.co.id", "category": "nasional_keagamaan"},
+    {"name": "RRI (Radio Republik Indonesia)", "domain": "rri.co.id", "category": "nasional_regional"},
+    {"name": "Antara News Jateng", "domain": "jateng.antaranews.com", "category": "kantor_berita"},
+
     # Media Televisi & Nasional
     {"name": "Metro TV", "domain": "metrotvnews.com", "category": "televisi"},
     {"name": "Berita Satu TV (BTV)", "domain": "beritasatu.com", "category": "televisi"},
