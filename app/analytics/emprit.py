@@ -14,6 +14,8 @@ from datetime import datetime
 from typing import Dict, Any, List
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
+import networkx as nx
+from networkx.algorithms import community as nx_community
 from app.models.entities import Article
 
 # Stopwords umum Bahasa Indonesia untuk ekstraksi Word Cloud
@@ -191,6 +193,29 @@ def calculate_emprit_analytics(db: Session) -> Dict[str, Any]:
                 edges_counter[(media_node_id, topic_node_id)] += 1
             if a.lecturer_name:
                 edges_counter[(f"p_{a.lecturer_name}", topic_node_id)] += 1
+    # ---- NetworkX graph analytics (centrality & community) ----
+    # Build graph from accumulated nodes and edges
+    G = nx.Graph()
+    for nid, nd in nodes_map.items():
+        G.add_node(nid)
+    for (src, dst), w in edges_counter.items():
+        G.add_edge(src, dst, weight=w)
+
+    # Compute centrality measures
+    degree_centrality = nx.degree_centrality(G)
+    betweenness_centrality = nx.betweenness_centrality(G, weight='weight')
+    # Community detection using greedy modularity
+    communities = nx_community.greedy_modularity_communities(G, weight='weight')
+    community_map = {}
+    for idx, comm in enumerate(communities):
+        for node in comm:
+            community_map[node] = idx
+
+    # Attach metrics to node data
+    for nid, nd in nodes_map.items():
+        nd["degree"] = round(degree_centrality.get(nid, 0), 4)
+        nd["betweenness"] = round(betweenness_centrality.get(nid, 0), 4)
+        nd["community"] = community_map.get(nid, -1)
 
     # Ambil nodes teratas agar graf tetap rapi dan performant
     top_nodes = sorted(nodes_map.values(), key=lambda x: x["value"], reverse=True)[:35]
