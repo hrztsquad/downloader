@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Vis-network CDN for Social Network Analysis (SNA) -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
@@ -24,11 +26,14 @@
                     <span class="text-xs bg-emerald-700 text-emerald-100 px-2.5 py-1 rounded-full font-medium">UIN Sunan Kudus</span>
                     <span class="text-xs bg-slate-800 text-slate-200 px-2 py-0.5 rounded font-mono">Netral & Terbuka</span>
                 </div>
-                <div class="flex items-center space-x-4 text-sm font-medium">
-                    <a href="/" class="hover:text-emerald-200 px-3 py-1.5 rounded transition">Dashboard</a>
-                    <a href="/articles" class="hover:text-emerald-200 px-3 py-1.5 rounded transition">Rekap Berita</a>
-                    <a href="/instagram" class="hover:text-emerald-200 px-3 py-1.5 rounded transition">Instagram Kampus</a>
-                    <a href="/export/excel" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow transition">📥 Unduh Excel</a>
+                <div class="flex items-center space-x-3 text-sm font-medium">
+                    <a href="/" class="hover:text-emerald-200 px-2.5 py-1.5 rounded transition">Dashboard</a>
+                    <a href="/articles" class="hover:text-emerald-200 px-2.5 py-1.5 rounded transition">Rekap Berita</a>
+                    <a href="/analytics" class="hover:text-emerald-200 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 bg-emerald-700/80 hover:bg-emerald-700 text-white shadow-sm border border-emerald-500/30">
+                        🕸️ Analisis Emprit
+                    </a>
+                    <a href="/instagram" class="hover:text-emerald-200 px-2.5 py-1.5 rounded transition">Instagram Kampus</a>
+                    <a href="/export/excel" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition">📥 Excel</a>
                 </div>
             </div>
         </div>

@@ -67,6 +67,9 @@ def dashboard_overview(request: Request, db: Session = Depends(get_db)):
     total_ig_posts = db.query(IgMedia).count()
     total_ig_comments = db.query(IgComment).count()
 
+    # Net Sentiment Score (NSS) ala Drone Emprit
+    nss = round(((total_positive - total_negative) / total_articles) * 100, 1) if total_articles > 0 else 0.0
+
     return templates.TemplateResponse(
         request=request,
         name="dashboard.html",
@@ -82,6 +85,7 @@ def dashboard_overview(request: Request, db: Session = Depends(get_db)):
             "top_topics": top_topics,
             "total_ig_posts": total_ig_posts,
             "total_ig_comments": total_ig_comments,
+            "nss": nss,
         },
     )
 
@@ -313,3 +317,23 @@ def sync_instagram(db: Session = Depends(get_db)):
 
     db.commit()
     return RedirectResponse(url="/instagram", status_code=303)
+
+
+@router.get("/analytics", response_class=HTMLResponse)
+def emprit_analytics_page(request: Request, db: Session = Depends(get_db)):
+    """Halaman Analisis komprehensif ala Drone Emprit: SoV, SNA Graph, Timeline, dan Word Cloud."""
+    from app.analytics.emprit import calculate_emprit_analytics
+    import json
+    data = calculate_emprit_analytics(db)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="analytics.html",
+        context={
+            "data": data,
+            "timeline_json": json.dumps(data["timeline"]),
+            "sna_json": json.dumps(data["sna_graph"]),
+            "media_sov_json": json.dumps(data["media_sov"]),
+            "entity_sov_json": json.dumps(data["entity_sov"]),
+        },
+    )
