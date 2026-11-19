@@ -67,8 +67,11 @@ def dashboard_overview(request: Request, db: Session = Depends(get_db)):
     total_ig_posts = db.query(IgMedia).count()
     total_ig_comments = db.query(IgComment).count()
 
-    # Net Sentiment Score (NSS) ala Drone Emprit
-    nss = round(((total_positive - total_negative) / total_articles) * 100, 1) if total_articles > 0 else 0.0
+    # Net Sentiment Score (NSS) & Komprehensif Data ala Drone Emprit
+    from app.analytics.emprit import calculate_emprit_analytics
+    import json
+    emprit_data = calculate_emprit_analytics(db)
+    nss = emprit_data["nss"]
 
     return templates.TemplateResponse(
         request=request,
@@ -86,6 +89,11 @@ def dashboard_overview(request: Request, db: Session = Depends(get_db)):
             "total_ig_posts": total_ig_posts,
             "total_ig_comments": total_ig_comments,
             "nss": nss,
+            "emprit_data": emprit_data,
+            "timeline_json": json.dumps(emprit_data["timeline"]),
+            "sna_json": json.dumps(emprit_data["sna_graph"]),
+            "media_sov_json": json.dumps(emprit_data["media_sov"]),
+            "entity_sov_json": json.dumps(emprit_data["entity_sov"]),
         },
     )
 
