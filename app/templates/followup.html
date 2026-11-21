@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Isu & Tindak Lanjut | UIN Sunan Kudus{% endblock %}
+{% block content %}
+<div class="space-y-5">
+  <div class="bg-white border border-slate-200 rounded-xl p-6">
+    <h1 class="text-xl font-bold text-slate-900">Isu Berita &amp; Saran Tindak Lanjut</h1>
+    <p class="text-xs text-slate-500 mt-1 max-w-3xl">Setiap berita dipetakan ke isu utama, lalu saran disusun dari distribusi sentimen, tren 7 hari, dan media dominan pada {{ total }} berita terbaru. Saran bersifat pendukung keputusan dan perlu ditinjau Humas/pimpinan.</p>
+  </div>
+  {% for g in groups %}
+  <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+    <div class="p-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h2 class="text-base font-semibold text-slate-900">{{ g.label }}</h2>
+        <p class="text-xs text-slate-500 mt-1">{{ g.evidence }}</p>
+      </div>
+      <span class="text-[11px] font-semibold px-2.5 py-1 rounded border
+        {% if g.priority == 'Tinggi' %}bg-red-50 text-red-700 border-red-200{% elif g.priority == 'Sedang' %}bg-amber-50 text-amber-700 border-amber-200{% else %}bg-emerald-50 text-emerald-700 border-emerald-200{% endif %}">Prioritas {{ g.priority }}</span>
+    </div>
+    <div class="p-5 bg-slate-50 border-b border-slate-100">
+      <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Saran tindak lanjut</div>
+      <p class="text-sm text-slate-800 leading-relaxed">{{ g.recommendation }}</p>
+    </div>
+    <table class="w-full text-xs">
+      <tbody class="divide-y divide-slate-100">
+      {% for a in g.articles[:10] %}
+        <tr>
+          <td class="px-5 py-3 w-1/2"><a href="{{ a.url }}" target="_blank" class="text-slate-800 hover:text-emerald-700 font-medium">{{ a.title }}</a>
+            <div class="text-slate-400 mt-0.5">{{ a.source_name }}{% if a.published_at %} · {{ a.published_at.strftime('%d %b %Y') }}{% endif %} · {{ a.sentiment or 'netral' }}</div></td>
+          <td class="px-5 py-3 text-slate-600"><span class="font-semibold text-slate-700">{{ a.issue_label }}:</span> {{ a.issue_advice }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% if g.articles|length > 10 %}<div class="px-5 py-2 text-[11px] text-slate-400">+ {{ g.articles|length - 10 }} berita lain</div>{% endif %}
+  </div>
+  {% else %}
+  <div class="bg-white border border-slate-200 rounded-xl p-8 text-center text-sm text-slate-500">Belum ada data berita.</div>
+  {% endfor %}
+</div>
+{% endblock %}

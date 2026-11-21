@@ -378,3 +378,15 @@ def emprit_analytics_page(request: Request, embed: Optional[bool] = Query(False)
             "is_embed": embed,
         },
     )
+
+
+@router.get("/tindak-lanjut", response_class=HTMLResponse)
+def follow_up_page(request: Request, embed: Optional[bool] = Query(False), db: Session = Depends(get_db)):
+    """Isu per berita beserta saran tindak lanjut berbasis analisis data."""
+    from app.analytics.recommendations import build_followups
+    articles = db.query(Article).order_by(desc(Article.published_at)).limit(500).all()
+    groups = build_followups(articles)
+    return templates.TemplateResponse(
+        request=request, name="followup.html",
+        context={"groups": groups, "total": len(articles), "is_embed": embed},
+    )
