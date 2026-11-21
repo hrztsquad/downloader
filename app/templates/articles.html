@@ -92,103 +92,198 @@
     </div>
     {% endif %}
 
-    <!-- Tabel Rekap Berita -->
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-                <thead class="bg-slate-100 text-slate-700 font-semibold uppercase tracking-wider border-b border-slate-200">
-                    <tr>
-                        <th class="px-4 py-3">Tanggal & Media</th>
-                        <th class="px-4 py-3 w-1/3">Judul Berita & Ringkasan</th>
-                        <th class="px-4 py-3">Dosen / Tokoh Terkait</th>
-                        <th class="px-4 py-3">Sentimen & Alasan</th>
-                        <th class="px-4 py-3">Sensitif</th>
-                        <th class="px-4 py-3 text-center">Verifikasi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    {% for a in articles %}
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="px-4 py-3 align-top whitespace-nowrap">
-                            <span class="font-semibold text-slate-800">{{ a.source_name }}</span>
-                            <div class="text-[11px] text-slate-400 mt-0.5">
-                                {{ a.published_at.strftime('%d/%m/%Y %H:%M') if a.published_at else '-' }}
-                            </div>
-                            <span class="inline-block mt-1 text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
-                                {{ a.topic or 'umum' }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 align-top">
-                            <a href="{{ a.url }}" target="_blank" class="font-medium text-slate-900 hover:text-emerald-700 leading-snug">
-                                {{ a.title }} ↗
-                            </a>
-                            <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
-                                {{ a.summary or a.content[:200] if a.content else '-' }}
-                            </p>
-                        </td>
-                        <td class="px-4 py-3 align-top">
-                            {% if a.lecturer_name %}
-                            <span class="inline-block bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded font-medium text-[11px]">
-                                👤 {{ a.lecturer_name }}
-                            </span>
-                            {% else %}
-                            <span class="text-slate-400">-</span>
-                            {% endif %}
-                        </td>
-                        <td class="px-4 py-3 align-top">
-                            {% if a.sentiment == 'positif' %}
-                            <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">Positif</span>
-                            {% elif a.sentiment == 'negatif' %}
-                            <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-semibold">Negatif</span>
-                            {% else %}
-                            <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">Netral</span>
-                            {% endif %}
-                            <p class="text-[11px] text-slate-500 mt-1 italic">
-                                {{ a.sentiment_reason or '-' }}
-                            </p>
-                        </td>
-                        <td class="px-4 py-3 align-top whitespace-nowrap">
-                            {% if a.is_sensitive %}
-                            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">⚠️ {{ a.sensitive_category|upper }}</span>
-                            <div class="text-[11px] text-amber-700 mt-1 max-w-[150px] whitespace-normal">
-                                {{ a.sensitive_reason or '-' }}
-                            </div>
-                            {% else %}
-                            <span class="text-slate-400">-</span>
-                            {% endif %}
-                        </td>
-                        <td class="px-4 py-3 align-top text-center whitespace-nowrap">
-                            {% if a.is_verified %}
-                            <span class="text-emerald-600 font-semibold text-[11px] block">✓ Terverifikasi</span>
-                            <span class="text-[10px] text-slate-400">{{ a.verified_by }}</span>
-                            {% else %}
-                            <!-- Form mini verifikasi manusia -->
-                            <form action="/articles/{{ a.id }}/verify" method="POST" class="inline-flex flex-col gap-1">
-                                <div class="flex items-center gap-1 justify-center">
-                                    <select name="sentiment" class="text-[11px] border border-slate-300 rounded px-1.5 py-0.5">
-                                        <option value="positif" {% if a.sentiment == 'positif' %}selected{% endif %}>Positif</option>
-                                        <option value="netral" {% if a.sentiment == 'netral' %}selected{% endif %}>Netral</option>
-                                        <option value="negatif" {% if a.sentiment == 'negatif' %}selected{% endif %}>Negatif</option>
-                                    </select>
-                                    <button type="submit" class="bg-slate-700 hover:bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded">
-                                        Simpan
+    <!-- Form & Tabel Rekap Berita -->
+    <form id="bulkDeleteForm" action="/articles-bulk-delete" method="POST" onsubmit="return confirmBulkDelete();">
+        <input type="hidden" name="redirect_url" value="{{ request.url.path }}{% if request.url.query %}?{{ request.url.query }}{% endif %}">
+
+        <!-- Toolbar Aksi Massal (Muncul saat ada checkbox terpilih) -->
+        <div id="bulkActionBar" class="hidden mb-3 bg-rose-50 border border-rose-200 p-3 rounded-xl flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2 text-rose-900 font-semibold">
+                <span>⚠️ <span id="selectedCountText">0</span> berita dipilih</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="clearAllSelections();" class="text-slate-600 hover:text-slate-800 font-medium px-2 py-1">
+                    Batal
+                </button>
+                <button type="submit" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5">
+                    🗑️ Hapus Berita Terpilih
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-100 text-slate-700 font-semibold uppercase tracking-wider border-b border-slate-200">
+                        <tr>
+                            <th class="px-3 py-3 w-8 text-center">
+                                <input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll(this)" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer" title="Pilih Semua">
+                            </th>
+                            <th class="px-4 py-3">Tanggal & Media</th>
+                            <th class="px-4 py-3 w-1/3">Judul Berita & Ringkasan</th>
+                            <th class="px-4 py-3">Dosen / Tokoh Terkait</th>
+                            <th class="px-4 py-3">Sentimen & Alasan</th>
+                            <th class="px-4 py-3">Sensitif</th>
+                            <th class="px-4 py-3 text-center">Verifikasi</th>
+                            <th class="px-4 py-3 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for a in articles %}
+                        <tr class="hover:bg-slate-50 transition" id="row-{{ a.id }}">
+                            <td class="px-3 py-3 align-top text-center">
+                                <input type="checkbox" name="article_ids" value="{{ a.id }}" onchange="handleRowCheckboxChange();" class="row-checkbox rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                            </td>
+                            <td class="px-4 py-3 align-top whitespace-nowrap">
+                                <span class="font-semibold text-slate-800">{{ a.source_name }}</span>
+                                <div class="text-[11px] text-slate-400 mt-0.5">
+                                    {{ a.published_at.strftime('%d/%m/%Y %H:%M') if a.published_at else '-' }}
+                                </div>
+                                <span class="inline-block mt-1 text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
+                                    {{ a.topic or 'umum' }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 align-top">
+                                <a href="{{ a.url }}" target="_blank" class="font-medium text-slate-900 hover:text-emerald-700 leading-snug">
+                                    {{ a.title }} ↗
+                                </a>
+                                <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                                    {{ a.summary or a.content[:200] if a.content else '-' }}
+                                </p>
+                            </td>
+                            <td class="px-4 py-3 align-top">
+                                {% if a.lecturer_name %}
+                                <span class="inline-block bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded font-medium text-[11px]">
+                                    👤 {{ a.lecturer_name }}
+                                </span>
+                                {% else %}
+                                <span class="text-slate-400">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3 align-top">
+                                {% if a.sentiment == 'positif' %}
+                                <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">Positif</span>
+                                {% elif a.sentiment == 'negatif' %}
+                                <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-semibold">Negatif</span>
+                                {% else %}
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">Netral</span>
+                                {% endif %}
+                                <p class="text-[11px] text-slate-500 mt-1 italic">
+                                    {{ a.sentiment_reason or '-' }}
+                                </p>
+                            </td>
+                            <td class="px-4 py-3 align-top whitespace-nowrap">
+                                {% if a.is_sensitive %}
+                                <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">⚠️ {{ a.sensitive_category|upper }}</span>
+                                <div class="text-[11px] text-amber-700 mt-1 max-w-[150px] whitespace-normal">
+                                    {{ a.sensitive_reason or '-' }}
+                                </div>
+                                {% else %}
+                                <span class="text-slate-400">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3 align-top text-center whitespace-nowrap">
+                                {% if a.is_verified %}
+                                <span class="text-emerald-600 font-semibold text-[11px] block">✓ Terverifikasi</span>
+                                <span class="text-[10px] text-slate-400">{{ a.verified_by }}</span>
+                                {% else %}
+                                <!-- Form mini verifikasi manusia -->
+                                <div class="inline-flex flex-col gap-1">
+                                    <button type="button" onclick="submitSingleVerify({{ a.id }})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] px-2 py-1 rounded border border-slate-300">
+                                        Verifikasi ✍️
                                     </button>
                                 </div>
-                            </form>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="5" class="px-4 py-8 text-center text-slate-400">
-                            Tidak ada artikel yang cocok dengan filter.
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3 align-top text-center whitespace-nowrap">
+                                <button type="button" onclick="submitSingleDelete({{ a.id }}, '{{ a.title|replace('\'', '\\\'')|truncate(40) }}')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-900 border border-rose-200 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition flex items-center gap-1 mx-auto" title="Hapus berita ini dari database">
+                                    🗑️ Hapus
+                                </button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="px-4 py-8 text-center text-slate-400">
+                                Tidak ada artikel yang cocok dengan filter.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    </form>
+
+    <!-- Hidden form untuk single delete -->
+    <form id="singleDeleteForm" action="" method="POST" style="display:none;">
+        <input type="hidden" name="redirect_url" value="{{ request.url.path }}{% if request.url.query %}?{{ request.url.query }}{% endif %}">
+    </form>
+
+    <!-- Hidden form untuk single verify -->
+    <form id="singleVerifyForm" action="" method="POST" style="display:none;">
+        <input type="hidden" name="sentiment" id="verifySentimentInput" value="positif">
+    </form>
 
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleSelectAll(master) {
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(cb => cb.checked = master.checked);
+        handleRowCheckboxChange();
+    }
+
+    function handleRowCheckboxChange() {
+        const checked = document.querySelectorAll('.row-checkbox:checked');
+        const count = checked.length;
+        const bar = document.getElementById('bulkActionBar');
+        const countText = document.getElementById('selectedCountText');
+        
+        if (count > 0) {
+            bar.classList.remove('hidden');
+            countText.innerText = count;
+        } else {
+            bar.classList.add('hidden');
+            const selectAll = document.getElementById('selectAllCheckbox');
+            if (selectAll) selectAll.checked = false;
+        }
+    }
+
+    function clearAllSelections() {
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(cb => cb.checked = false);
+        const selectAll = document.getElementById('selectAllCheckbox');
+        if (selectAll) selectAll.checked = false;
+        handleRowCheckboxChange();
+    }
+
+    function confirmBulkDelete() {
+        const count = document.querySelectorAll('.row-checkbox:checked').length;
+        if (count === 0) {
+            alert('Silakan pilih minimal satu berita untuk dihapus.');
+            return false;
+        }
+        return confirm('Apakah Anda yakin ingin menghapus ' + count + ' berita terpilih dari database? Tindakan ini tidak dapat dibatalkan.');
+    }
+
+    function submitSingleDelete(id, title) {
+        if (confirm('Yakin ingin menghapus berita ini:\n"' + title + '"?')) {
+            const form = document.getElementById('singleDeleteForm');
+            form.action = '/articles/' + id + '/delete';
+            form.submit();
+        }
+    }
+
+    function submitSingleVerify(id) {
+        const pilihan = prompt('Ubah sentimen berita (ketik: positif / netral / negatif):', 'positif');
+        if (pilihan && ['positif', 'netral', 'negatif'].includes(pilihan.toLowerCase())) {
+            const form = document.getElementById('singleVerifyForm');
+            form.action = '/articles/' + id + '/verify';
+            document.getElementById('verifySentimentInput').value = pilihan.toLowerCase();
+            form.submit();
+        }
+    }
+</script>
 {% endblock %}

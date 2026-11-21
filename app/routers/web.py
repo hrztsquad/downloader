@@ -1,7 +1,7 @@
 """Router antarmuka Web Dashboard SUKU-Monitor."""
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from fastapi import APIRouter, Depends, Request, Query, Form, BackgroundTasks
 from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
@@ -208,6 +208,37 @@ def verify_article_label(
         db.commit()
 
     return RedirectResponse(url="/articles", status_code=303)
+
+
+@router.post("/articles/{article_id}/delete")
+def delete_article(
+    article_id: int,
+    redirect_url: Optional[str] = Form(None),
+    db: Session = Depends(get_db)
+):
+    """Menghapus satu berita dari database dan audit log terkait."""
+    article = db.query(Article).filter(Article.id == article_id).first()
+    if article:
+        db.query(AuditLog).filter(AuditLog.article_id == article_id).delete()
+        db.delete(article)
+        db.commit()
+    target = redirect_url if redirect_url and redirect_url.startswith("/") else "/articles"
+    return RedirectResponse(url=target, status_code=303)
+
+
+@router.post("/articles-bulk-delete")
+def bulk_delete_articles(
+    article_ids: List[int] = Form(...),
+    redirect_url: Optional[str] = Form(None),
+    db: Session = Depends(get_db)
+):
+    """Menghapus banyak berita sekaligus dari daftar."""
+    if article_ids:
+        db.query(AuditLog).filter(AuditLog.article_id.in_(article_ids)).delete(synchronize_session=False)
+        db.query(Article).filter(Article.id.in_(article_ids)).delete(synchronize_session=False)
+        db.commit()
+    target = redirect_url if redirect_url and redirect_url.startswith("/") else "/articles"
+    return RedirectResponse(url=target, status_code=303)
 
 
 @router.get("/export/excel")

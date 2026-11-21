@@ -300,10 +300,16 @@
                             {% endif %}
                         </div>
                         <a href="{{ item.url }}" target="_blank" class="text-sm font-medium text-slate-900 hover:text-emerald-700 leading-snug">
-                            {{ item.title }}
+                            {{ item.title }} ↗
                         </a>
                         <p class="text-xs text-slate-500 mt-1 italic">{{ item.sentiment_reason or item.summary or '-' }}</p>
                     </div>
+                    <form action="/articles/{{ item.id }}/delete" method="POST" onsubmit="return confirm('Hapus berita ini dari daftar?');" class="shrink-0">
+                        <input type="hidden" name="redirect_url" value="/">
+                        <button type="submit" class="bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-800 border border-rose-200 px-2.5 py-1 rounded-md text-[11px] font-medium transition flex items-center gap-1" title="Hapus berita">
+                            🗑️ Hapus
+                        </button>
+                    </form>
                 </div>
             </div>
             {% else %}
