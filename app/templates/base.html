@@ -15,8 +15,9 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="{% if is_embed %}bg-white{% else %}bg-slate-50{% endif %} text-slate-800 min-h-screen flex flex-col">
 
+    {% if not is_embed %}
     <!-- Navbar -->
     <nav class="bg-emerald-800 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,18 +39,21 @@
             </div>
         </div>
     </nav>
+    {% endif %}
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    <main class="{% if is_embed %}w-full p-2{% else %}max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6{% endif %} flex-1 w-full">
         {% block content %}{% endblock %}
     </main>
 
+    {% if not is_embed %}
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
         <div class="max-w-7xl mx-auto px-4">
             SUKU-Monitor &copy; 2026 UIN Sunan Kudus &bull; Sistem Monitoring Publikasi & Opini Media Independen &bull; Didukung Gemini AI & Instagram Graph API
         </div>
     </footer>
+    {% endif %}
 
     {% block scripts %}{% endblock %}
 </body>

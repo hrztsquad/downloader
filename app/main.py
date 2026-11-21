@@ -29,5 +29,17 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Router
+from starlette.middleware.base import BaseHTTPMiddleware
+
+
+class FrameOptionsMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["X-Frame-Options"] = "ALLOWALL"
+        response.headers["Content-Security-Policy"] = "frame-ancestors *"
+        return response
+
+
+# Router & Middleware
+app.add_middleware(FrameOptionsMiddleware)
 app.include_router(web.router)

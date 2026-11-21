@@ -19,7 +19,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/", response_class=HTMLResponse)
-def dashboard_overview(request: Request, db: Session = Depends(get_db)):
+def dashboard_overview(request: Request, embed: Optional[bool] = Query(False), db: Session = Depends(get_db)):
     """Halaman utama ringkasan monitoring (Modul 1-5 & 11)."""
     # Total artikel
     total_articles = db.query(Article).count()
@@ -94,6 +94,7 @@ def dashboard_overview(request: Request, db: Session = Depends(get_db)):
             "sna_json": json.dumps(emprit_data["sna_graph"]),
             "media_sov_json": json.dumps(emprit_data["media_sov"]),
             "entity_sov_json": json.dumps(emprit_data["entity_sov"]),
+            "is_embed": embed,
         },
     )
 
@@ -359,7 +360,7 @@ def sync_instagram(db: Session = Depends(get_db)):
 
 
 @router.get("/analytics", response_class=HTMLResponse)
-def emprit_analytics_page(request: Request, db: Session = Depends(get_db)):
+def emprit_analytics_page(request: Request, embed: Optional[bool] = Query(False), db: Session = Depends(get_db)):
     """Halaman Analisis komprehensif ala Drone Emprit: SoV, SNA Graph, Timeline, dan Word Cloud."""
     from app.analytics.emprit import calculate_emprit_analytics
     import json
@@ -374,5 +375,6 @@ def emprit_analytics_page(request: Request, db: Session = Depends(get_db)):
             "sna_json": json.dumps(data["sna_graph"]),
             "media_sov_json": json.dumps(data["media_sov"]),
             "entity_sov_json": json.dumps(data["entity_sov"]),
+            "is_embed": embed,
         },
     )
