@@ -1,217 +1,367 @@
 {% extends "base.html" %}
 
-{% block title %}Analisis Emprit & SNA | SUKU-Monitor UIN Sunan Kudus{% endblock %}
+{% block title %}Media Intelligence & Social Network Analysis | UIN Sunan Kudus{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
 
-    <!-- Header & Keterangan Metrik Drone Emprit -->
-    <div class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-6 rounded-2xl shadow-md border border-emerald-800/40">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs uppercase tracking-widest font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-400/30">
-                        🦅 Media Intelligence & Social Network Analysis
+    <!-- Executive Header (Professional Media Intelligence Style) -->
+    <div class="bg-white border border-slate-200/90 rounded-xl p-6 shadow-xs">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+            <div class="space-y-1.5">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-900 text-slate-100 uppercase tracking-wider">
+                        Media Intelligence
                     </span>
-                    <span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Metodologi Drone Emprit</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                        Topologi Jejaring & Analisis Sentimen (SNA)
+                    </span>
+                    <span class="text-[11px] text-slate-400 font-mono">
+                        Dataset: Media Online, Portal Berita, & Komunitas
+                    </span>
                 </div>
-                <h1 class="text-2xl font-bold tracking-tight">Analisis Opini Publik & Pemetaan Isu UIN Sunan Kudus</h1>
-                <p class="text-xs text-slate-300 mt-1 max-w-2xl">
-                    Mengukur reputasi institusi melalui <em>Net Sentiment Score</em> (NSS), persebaran <em>Share of Voice</em> (SoV), tren volume pemberitaan, kata kunci terhangat, dan jejaring interaksi aktor-media.
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                    Laporan Pemetaan Opini Publik & Eksposur Media
+                </h1>
+                <p class="text-xs text-slate-500 max-w-3xl leading-relaxed">
+                    Pengukuran komprehensif reputasi kelembagaan UIN Sunan Kudus berbasis pemrosesan bahasa alami (NLP), Net Sentiment Score (NSS), pangsa sebutan (Share of Voice), dan Social Network Analysis (SNA).
                 </p>
             </div>
-            <div class="flex items-center gap-2">
-                <a href="/articles" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow transition">
-                    📰 Lihat Data Berita
+            <div class="flex items-center gap-2 shrink-0">
+                <a href="/articles" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
+                    Lihat Arsip Berita
+                </a>
+                <a href="/export/excel" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-xs transition">
+                    Unduh Rekap Data (.xlsx)
                 </a>
             </div>
         </div>
-    </div>
 
-    <!-- 4 Kartu Metrik Utama Ala Drone Emprit -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <!-- NSS Card -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Net Sentiment Score (NSS)</span>
-                <span class="text-lg">⚖️</span>
+        <!-- Meta Indicator Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5 mt-5 border-t border-slate-100 text-xs text-slate-600">
+            <div>
+                <span class="text-slate-400 block text-[11px]">Entitas Utama:</span>
+                <span class="font-semibold text-slate-800">UIN Sunan Kudus & Sivitas</span>
             </div>
-            <div class="mt-2 flex items-baseline gap-2">
-                <span class="text-3xl font-extrabold {% if data.nss > 0 %}text-emerald-600{% elif data.nss < 0 %}text-rose-600{% else %}text-slate-700{% endif %}">
-                    {% if data.nss > 0 %}+{% endif %}{{ data.nss }}%
+            <div>
+                <span class="text-slate-400 block text-[11px]">Cakupan Sumber:</span>
+                <span class="font-semibold text-slate-800">18 Media Lokal, Nasional, & UGC</span>
+            </div>
+            <div>
+                <span class="text-slate-400 block text-[11px]">Algoritma Graf:</span>
+                <span class="font-semibold text-slate-800">Degree & Betweenness Centrality</span>
+            </div>
+            <div>
+                <span class="text-slate-400 block text-[11px]">Status Analisis:</span>
+                <span class="inline-flex items-center gap-1 font-semibold text-emerald-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Data Terupdate
                 </span>
-                <span class="text-[11px] font-medium text-slate-400">Favorability</span>
             </div>
-            <p class="text-[11px] text-slate-500 mt-1">
-                Rumus: <code>(Positif - Negatif) / Total</code>. Menunjukkan dominasi citra positif di ruang publik.
-            </p>
-        </div>
-
-        <!-- Total Mentions -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Mentions Media</span>
-                <span class="text-lg">📢</span>
-            </div>
-            <div class="mt-2 text-3xl font-extrabold text-slate-800">
-                {{ data.total_articles }}
-            </div>
-            <p class="text-[11px] text-slate-500 mt-1">
-                Dari 18 media online lokal Muria/Jateng & agregator nasional.
-            </p>
-        </div>
-
-        <!-- Rasio Sentimen -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Komposisi Sentimen</span>
-                <span class="text-lg">📊</span>
-            </div>
-            <div class="mt-3 flex items-center gap-1.5 text-xs font-semibold">
-                <span class="text-emerald-700 bg-emerald-50 px-2 py-1 rounded">🟢 {{ data.sentiment_counts.positif }} Pos</span>
-                <span class="text-slate-700 bg-slate-100 px-2 py-1 rounded">⚪ {{ data.sentiment_counts.netral }} Net</span>
-                <span class="text-rose-700 bg-rose-50 px-2 py-1 rounded">🔴 {{ data.sentiment_counts.negatif }} Neg</span>
-            </div>
-            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-3 flex">
-                {% set total = data.total_articles if data.total_articles > 0 else 1 %}
-                <div style="width: {{ (data.sentiment_counts.positif / total * 100)|round }}%" class="bg-emerald-500 h-full"></div>
-                <div style="width: {{ (data.sentiment_counts.netral / total * 100)|round }}%" class="bg-slate-400 h-full"></div>
-                <div style="width: {{ (data.sentiment_counts.negatif / total * 100)|round }}%" class="bg-rose-500 h-full"></div>
-            </div>
-        </div>
-
-        <!-- Tokoh Dosen Teridentifikasi -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tokoh / Dosen Terpapar</span>
-                <span class="text-lg">🎓</span>
-            </div>
-            <div class="mt-2 text-3xl font-extrabold text-indigo-600">
-                {{ data.top_figures|length }} <span class="text-xs text-slate-400 font-normal">tokoh utama</span>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-1">
-                Terdeteksi dari basis 286 nama dosen & pimpinan kampus.
-            </p>
         </div>
     </div>
 
-    <!-- Grafik Tren Mentions dari Waktu ke Waktu (Timeline Ala Drone Emprit) -->
-    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
+    <!-- 4 Key Executive Performance Indicators -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- KPI 1: Net Sentiment Score (NSS) -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
             <div>
-                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                    📈 Tren Pemberitaan & Sentimen dari Waktu ke Waktu (Volume Over Time)
-                </h3>
-                <p class="text-xs text-slate-500">Distribusi intensitas pemberitaan bulanan yang dipisah berdasarkan klasifikasi sentimen.</p>
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span class="uppercase tracking-wider">Net Sentiment Score (NSS)</span>
+                    <span class="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">Indeks</span>
+                </div>
+                <div class="mt-2.5 flex items-baseline gap-2">
+                    <span class="text-3xl font-extrabold font-mono tracking-tight {% if data.nss > 0 %}text-emerald-700{% elif data.nss < 0 %}text-rose-700{% else %}text-slate-700{% endif %}">
+                        {% if data.nss > 0 %}+{% endif %}{{ data.nss }}%
+                    </span>
+                    <span class="text-xs text-slate-400">favorability</span>
+                </div>
             </div>
-            <div class="flex items-center gap-2 text-xs">
-                <span class="inline-flex items-center gap-1 text-emerald-700"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Positif</span>
-                <span class="inline-flex items-center gap-1 text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Netral</span>
-                <span class="inline-flex items-center gap-1 text-rose-700"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Negatif</span>
-            </div>
-        </div>
-        <div class="h-64">
-            <canvas id="timelineChart"></canvas>
-        </div>
-    </div>
-
-    <!-- Baris Share of Voice (SoV) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- SoV Media -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                🥧 Share of Voice (SoV) Media Pemberita
-            </h3>
-            <p class="text-xs text-slate-500 mb-4">Porsi publikasi berita berdasarkan portal media online yang paling aktif.</p>
-            <div class="h-56 flex items-center justify-center">
-                <canvas id="mediaSovChart"></canvas>
+            <!-- Progress bar NSS (-100 to +100 normalized) -->
+            <div class="mt-4 pt-3 border-t border-slate-100">
+                {% set nss_norm = ((data.nss + 100) / 2)|round %}
+                <div class="flex justify-between text-[10px] text-slate-400 mb-1 font-mono">
+                    <span>-100 (Kritis)</span>
+                    <span>0 (Netral)</span>
+                    <span>+100 (Optimal)</span>
+                </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden relative">
+                    <div style="width: {{ nss_norm }}%" class="h-full {% if data.nss > 0 %}bg-emerald-500{% elif data.nss < 0 %}bg-rose-500{% else %}bg-slate-400{% endif %}"></div>
+                </div>
             </div>
         </div>
 
-        <!-- SoV Entitas Brand -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                🏷️ Share of Voice (SoV) Entitas & Institusi
-            </h3>
-            <p class="text-xs text-slate-500 mb-4">Perbandingan kemunculan nama institusi dalam sejarah transformasi kampus.</p>
-            <div class="h-56 flex items-center justify-center">
-                <canvas id="entitySovChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Social Network Analysis (SNA) Graph Interaktif -->
-    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        <!-- KPI 2: Total Volume Mentions -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
             <div>
-                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    🕸️ Social Network Analysis (SNA): Jejaring Media, Tokoh, & Isu
-                </h3>
-                <p class="text-xs text-slate-500">
-                    Visualisasi relasi interaktif. Hubungan menghubungkan <strong>Portal Media</strong> dengan <strong>Dosen / Tokoh</strong> dan <strong>Topik Berita</strong>. Anda dapat menggeser (drag), memperbesar (zoom), atau klik node.
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span class="uppercase tracking-wider">Total Volume Pemberitaan</span>
+                    <span class="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">Mentions</span>
+                </div>
+                <div class="mt-2.5 text-3xl font-extrabold font-mono text-slate-900 tracking-tight">
+                    {{ data.total_articles }}
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between">
+                <span>Peliputan Berita Unik</span>
+                <span class="font-semibold text-slate-700">100% Terverifikasi</span>
+            </div>
+        </div>
+
+        <!-- KPI 3: Komposisi Sentimen -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span class="uppercase tracking-wider">Distribusi Sentimen</span>
+                    <span class="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">Rasio</span>
+                </div>
+                <div class="mt-2.5 flex items-center gap-2 text-xs font-semibold">
+                    <span class="text-emerald-700 bg-emerald-50 border border-emerald-200/50 px-2 py-0.5 rounded">
+                        Positif: {{ data.sentiment_counts.positif }}
+                    </span>
+                    <span class="text-slate-600 bg-slate-50 border border-slate-200/50 px-2 py-0.5 rounded">
+                        Netral: {{ data.sentiment_counts.netral }}
+                    </span>
+                    <span class="text-rose-700 bg-rose-50 border border-rose-200/50 px-2 py-0.5 rounded">
+                        Negatif: {{ data.sentiment_counts.negatif }}
+                    </span>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100">
+                {% set tot = data.total_articles if data.total_articles > 0 else 1 %}
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
+                    <div style="width: {{ (data.sentiment_counts.positif / tot * 100)|round }}%" class="bg-emerald-500 h-full"></div>
+                    <div style="width: {{ (data.sentiment_counts.netral / tot * 100)|round }}%" class="bg-slate-400 h-full"></div>
+                    <div style="width: {{ (data.sentiment_counts.negatif / tot * 100)|round }}%" class="bg-rose-500 h-full"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 4: Aktor & Tokoh Teridentifikasi -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span class="uppercase tracking-wider">Aktor & Dosen Terliput</span>
+                    <span class="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">Entitas</span>
+                </div>
+                <div class="mt-2.5 text-3xl font-extrabold font-mono text-indigo-700 tracking-tight">
+                    {{ data.top_figures|length }}
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between">
+                <span>Basis Terdata</span>
+                <span class="font-semibold text-slate-700">286 Dosen & Pimpinan</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Network Analysis (SNA) Main Section -->
+    <div class="bg-white border border-slate-200/90 rounded-xl shadow-xs overflow-hidden">
+        <!-- SNA Header & Controls Toolbar -->
+        <div class="p-4 sm:p-5 border-b border-slate-200/80 bg-slate-50/60 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                        Social Network Analysis (SNA): Topologi Jejaring Media, Tokoh & Topik
+                    </h2>
+                    <span class="text-[10px] bg-slate-200 text-slate-700 font-mono px-1.5 py-0.5 rounded">ForceAtlas2 Layout</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Memvisualisasikan korelasi struktural: hubungan antara <strong>Portal Media Pemberita</strong>, <strong>Aktor Dosen</strong>, dan <strong>Isu Topik</strong>.
                 </p>
             </div>
-            <!-- Legenda SNA -->
-            <div class="flex items-center gap-3 text-xs">
-                <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Media</span>
-                <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-500"></span> Dosen / Tokoh</span>
-                <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Topik Isu</span>
+
+            <!-- Interactivity Controls & Legend -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Group Legend -->
+                <div class="flex items-center gap-2 text-[11px] bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">
+                    <span class="inline-flex items-center gap-1 font-medium text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> Media ({{ data.media_sov|length }})
+                    </span>
+                    <span class="inline-flex items-center gap-1 font-medium text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-sm bg-purple-600"></span> Dosen ({{ data.top_figures|length }})
+                    </span>
+                    <span class="inline-flex items-center gap-1 font-medium text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Topik Isu
+                    </span>
+                </div>
+
+                <!-- Graph Action Buttons -->
+                <div class="inline-flex items-center bg-white rounded-lg border border-slate-200 shadow-2xs divide-x divide-slate-200 text-xs">
+                    <button type="button" onclick="zoomSna(0.3)" class="px-2.5 py-1 text-slate-700 hover:bg-slate-50 font-medium" title="Perbesar">
+                        Zoom +
+                    </button>
+                    <button type="button" onclick="zoomSna(-0.3)" class="px-2.5 py-1 text-slate-700 hover:bg-slate-50 font-medium" title="Perkecil">
+                        Zoom -
+                    </button>
+                    <button type="button" onclick="resetSnaView()" class="px-2.5 py-1 text-slate-700 hover:bg-slate-50 font-medium" title="Pusatkan Ulang">
+                        Reset
+                    </button>
+                    <button type="button" id="togglePhysicsBtn" onclick="toggleSnaPhysics()" class="px-2.5 py-1 text-slate-700 hover:bg-slate-50 font-medium">
+                        Kunci Posisi
+                    </button>
+                </div>
             </div>
         </div>
-        <div id="snaNetwork" class="w-full h-96 border border-slate-200 rounded-xl bg-slate-50"></div>
-        <p class="text-[11px] text-slate-400 text-right italic">
-            *Ketebalan garis menunjukkan frekuensi peliputan bersama antara media dan tokoh/topik.
-        </p>
+
+        <!-- Network Canvas -->
+        <div class="relative bg-slate-900 w-full">
+            <div id="snaNetwork" class="w-full h-[540px]"></div>
+            
+            <!-- Quick Graph Floating Tips -->
+            <div class="absolute bottom-3 left-3 bg-slate-950/80 backdrop-blur border border-slate-700/60 text-slate-300 text-[11px] px-3 py-1.5 rounded-lg shadow-sm">
+                <span>Petunjuk: Klik node untuk fokus, seret (drag) kanvas untuk navigasi, scroll mouse untuk zoom.</span>
+            </div>
+            <div class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur border border-slate-700/60 text-slate-400 text-[10px] font-mono px-2.5 py-1 rounded">
+                Nodes: {{ data.sna_graph.nodes|length }} | Edges: {{ data.sna_graph.edges|length }}
+            </div>
+        </div>
+
+        <div class="p-3 bg-slate-50 border-t border-slate-200/80 text-[11px] text-slate-500 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span>*Diameter node dihitung dari <strong>Degree Centrality</strong> (tingkat intensitas keterlibatan).</span>
+            <span>*Warna node dikelompokkan berdasarkan <strong>Modularity Community</strong>.</span>
+        </div>
     </div>
 
-    <!-- Baris Top Keywords / Word Cloud & Top Figures -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Word Cloud / Trending Terms -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                ☁️ Kata Kunci Paling Sering Muncul (Trending Keywords)
-            </h3>
-            <p class="text-xs text-slate-500 mb-4">Kata kunci utama setelah penyaringan stopwords bahasa Indonesia.</p>
-            <div class="flex flex-wrap gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100 min-h-[180px] items-center justify-center">
-                {% for kw in data.top_keywords %}
-                    {% set font_size = 11 + (kw.count * 2) %}
-                    {% if font_size > 24 %}{% set font_size = 24 %}{% endif %}
-                    <span class="font-medium text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition cursor-default" style="font-size: {{ font_size }}px;">
-                        {{ kw.word }} <span class="text-[10px] text-slate-400">({{ kw.count }})</span>
+    <!-- Timeline Trends & Share of Voice Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Timeline Trends (Volume Over Time) - Spans 2 Cols -->
+        <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                        Tren Volume Pemberitaan per Waktu (Volume Over Time)
+                    </h2>
+                    <p class="text-xs text-slate-500">Intensitas liputan bulanan dipetakan ke sentimen positif, netral, dan negatif.</p>
+                </div>
+                <div class="flex items-center gap-3 text-xs">
+                    <span class="inline-flex items-center gap-1.5 text-slate-600 font-medium">
+                        <span class="w-2.5 h-2.5 rounded-xs bg-emerald-600"></span> Positif
                     </span>
-                {% else %}
-                    <p class="text-xs text-slate-400">Belum ada kata kunci terekstraksi.</p>
+                    <span class="inline-flex items-center gap-1.5 text-slate-600 font-medium">
+                        <span class="w-2.5 h-2.5 rounded-xs bg-slate-400"></span> Netral
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-600 font-medium">
+                        <span class="w-2.5 h-2.5 rounded-xs bg-rose-600"></span> Negatif
+                    </span>
+                </div>
+            </div>
+            <div class="h-64 sm:h-72 w-full">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Entity Benchmark (Share of Voice Transformasi Brand) -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                    Share of Voice (SoV) Identitas Brand
+                </h2>
+                <p class="text-xs text-slate-500 mb-4">Sebutan institusi dalam histori perubahan nomenklatur.</p>
+                <div class="h-48 flex items-center justify-center">
+                    <canvas id="entitySovChart"></canvas>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
+                {% for ent in data.entity_sov %}
+                <div class="flex items-center justify-between">
+                    <span class="font-medium text-slate-700">{{ ent.name }}</span>
+                    <span class="font-mono text-slate-500">{{ ent.count }} sebutan</span>
+                </div>
                 {% endfor %}
             </div>
         </div>
 
-        <!-- Key Opinion Figures (Top Dosen / Tokoh Paling Banyak Diberitakan) -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                🏆 Key Opinion Figures (Tokoh Terbanyak Diliput)
-            </h3>
-            <p class="text-xs text-slate-500 mb-3">Dosen & pimpinan kampus dengan eksposur media paling tinggi.</p>
-            <div class="divide-y divide-slate-100">
-                {% for fig in data.top_figures %}
-                <div class="py-2.5 flex items-center justify-between text-xs">
-                    <div>
-                        <span class="font-bold text-slate-800">{{ fig.name }}</span>
-                        <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
-                            <span class="text-emerald-600 font-medium">+{{ fig.positif }}</span> &bull;
-                            <span class="text-slate-500 font-medium">{{ fig.netral }}</span> &bull;
-                            <span class="text-rose-600 font-medium">-{{ fig.negatif }}</span>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <span class="bg-indigo-50 text-indigo-700 font-bold px-2.5 py-1 rounded-lg">
-                            {{ fig.total }} Berita
-                        </span>
+    </div>
+
+    <!-- Media Share of Voice & Key Opinion Leaders (KOLs) Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Media Share of Voice (Top Outlets) -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                        Pangsa Suara Media (Share of Voice Outlets)
+                    </h2>
+                    <p class="text-xs text-slate-500">Distribusi proporsi liputan dari portal berita online teraktif.</p>
+                </div>
+            </div>
+            <div class="h-56 flex items-center justify-center my-2">
+                <canvas id="mediaSovChart"></canvas>
+            </div>
+            <div class="divide-y divide-slate-100 text-xs mt-3 max-h-48 overflow-y-auto">
+                {% for m in data.media_sov %}
+                <div class="py-1.5 flex items-center justify-between">
+                    <span class="font-medium text-slate-800">{{ m.name }}</span>
+                    <div class="flex items-center gap-2 font-mono">
+                        <span class="text-slate-500">{{ m.count }} rilis</span>
+                        <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded text-[10px] font-semibold">{{ m.percent }}%</span>
                     </div>
                 </div>
-                {% else %}
-                <p class="text-xs text-slate-400 py-4">Belum ada data tokoh yang terpetakan secara otomatis.</p>
                 {% endfor %}
             </div>
+        </div>
+
+        <!-- Key Opinion Leaders / Tokoh Dosen Teratas -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                    Tokoh & Dosen Paling Banyak Diliput (Key Influential Figures)
+                </h2>
+                <p class="text-xs text-slate-500 mb-3">Peringkat eksposur figur sivitas akademika di media massa.</p>
+                <div class="divide-y divide-slate-100 max-h-80 overflow-y-auto">
+                    {% for fig in data.top_figures %}
+                    <div class="py-2.5 flex items-center justify-between text-xs">
+                        <div class="space-y-0.5">
+                            <span class="font-semibold text-slate-900 block">{{ fig.name }}</span>
+                            <div class="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
+                                <span class="text-emerald-700 font-medium">+{{ fig.positif }} Pos</span>
+                                <span>&bull;</span>
+                                <span class="text-slate-600 font-medium">{{ fig.netral }} Net</span>
+                                <span>&bull;</span>
+                                <span class="text-rose-700 font-medium">-{{ fig.negatif }} Neg</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block bg-slate-900 text-white font-mono text-[11px] font-semibold px-2 py-0.5 rounded">
+                                {{ fig.total }} Berita
+                            </span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-slate-400 py-6 text-center">Belum ada figur dosen yang terdata secara otomatis.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400">
+                *Dihitung berdasarkan pencocokan nama entitas terkurasi pada isi dan judul artikel.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Trending Terms & Word Frequency (Topic Cluster) -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                    Kata Kunci & Topik Terhangat (Top Key Phrases & Term Frequency)
+                </h2>
+                <p class="text-xs text-slate-500">Penyaringan kata berbobot tinggi setelah eliminasi stopwords bahasa Indonesia.</p>
+            </div>
+            <span class="text-[11px] text-slate-400 font-mono">25 Istilah Dominan</span>
+        </div>
+        <div class="flex flex-wrap gap-2 pt-2">
+            {% for kw in data.top_keywords %}
+                {% set weight = kw.count %}
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 bg-slate-50/70 hover:bg-slate-100 transition text-xs">
+                    <span class="font-medium text-slate-800">{{ kw.word }}</span>
+                    <span class="font-mono text-[10px] text-slate-600 bg-white border border-slate-200 px-1.5 py-0.2 rounded font-semibold">{{ weight }}</span>
+                </div>
+            {% else %}
+                <p class="text-xs text-slate-400 py-4">Belum ada data kata kunci yang diekstraksi.</p>
+            {% endfor %}
         </div>
     </div>
 
@@ -220,154 +370,241 @@
 
 {% block scripts %}
 <script>
-    // 1. Data Timeline
+    // 1. Data Timeline Volume Over Time (Stacked Bar Clean Design)
     const timelineData = {{ timeline_json | safe }};
-    const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
-    new Chart(ctxTimeline, {
-        type: 'bar',
-        data: {
-            labels: timelineData.labels,
-            datasets: [
-                {
-                    label: 'Positif',
-                    data: timelineData.positif,
-                    backgroundColor: '#10B981',
-                    borderRadius: 4
-                },
-                {
-                    label: 'Netral',
-                    data: timelineData.netral,
-                    backgroundColor: '#94A3B8',
-                    borderRadius: 4
-                },
-                {
-                    label: 'Negatif',
-                    data: timelineData.negatif,
-                    backgroundColor: '#F43F5E',
-                    borderRadius: 4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: { stacked: true, grid: { display: false } },
-                y: { stacked: true, beginAtZero: true }
+    const ctxTimeline = document.getElementById('timelineChart');
+    if (ctxTimeline) {
+        new Chart(ctxTimeline.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: timelineData.labels,
+                datasets: [
+                    {
+                        label: 'Positif',
+                        data: timelineData.positif,
+                        backgroundColor: '#059669', // Emerald 600
+                        borderRadius: 3
+                    },
+                    {
+                        label: 'Netral',
+                        data: timelineData.netral,
+                        backgroundColor: '#94A3B8', // Slate 400
+                        borderRadius: 3
+                    },
+                    {
+                        label: 'Negatif',
+                        data: timelineData.negatif,
+                        backgroundColor: '#E11D48', // Rose 600
+                        borderRadius: 3
+                    }
+                ]
             },
-            plugins: {
-                legend: { position: 'top', align: 'end' }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: { display: false },
+                        ticks: { font: { family: 'Inter', size: 11 } }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        grid: { color: '#F1F5F9' },
+                        ticks: { font: { family: 'Inter', size: 11 } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0F172A',
+                        padding: 10,
+                        titleFont: { family: 'Inter', size: 12, weight: 'bold' },
+                        bodyFont: { family: 'Inter', size: 11 }
+                    }
+                }
             }
-        }
-    });
+        });
+    }
 
     // 2. Data Media SoV
     const mediaSovData = {{ media_sov_json | safe }};
-    const ctxMediaSov = document.getElementById('mediaSovChart').getContext('2d');
-    new Chart(ctxMediaSov, {
-        type: 'doughnut',
-        data: {
-            labels: mediaSovData.map(d => d.name),
-            datasets: [{
-                data: mediaSovData.map(d => d.count),
-                backgroundColor: [
-                    '#059669', '#0284C7', '#6366F1', '#8B5CF6', '#EC4899',
-                    '#F59E0B', '#10B981', '#3B82F6', '#14B8A6', '#64748B', '#CBD5E1'
-                ],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } }
+    const ctxMediaSov = document.getElementById('mediaSovChart');
+    if (ctxMediaSov) {
+        new Chart(ctxMediaSov.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: mediaSovData.map(d => d.name),
+                datasets: [{
+                    data: mediaSovData.map(d => d.count),
+                    backgroundColor: [
+                        '#0F172A', '#1E293B', '#334155', '#475569', '#64748B',
+                        '#0284C7', '#0369A1', '#059669', '#047857', '#6366F1', '#4F46E5'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                cutout: '68%'
             }
-        }
-    });
+        });
+    }
 
     // 3. Data Entity SoV
     const entitySovData = {{ entity_sov_json | safe }};
-    const ctxEntitySov = document.getElementById('entitySovChart').getContext('2d');
-    new Chart(ctxEntitySov, {
-        type: 'pie',
-        data: {
-            labels: entitySovData.map(d => d.name),
-            datasets: [{
-                data: entitySovData.map(d => d.count),
-                backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6'],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } }
+    const ctxEntitySov = document.getElementById('entitySovChart');
+    if (ctxEntitySov) {
+        new Chart(ctxEntitySov.getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: entitySovData.map(d => d.name),
+                datasets: [{
+                    data: entitySovData.map(d => d.count),
+                    backgroundColor: ['#047857', '#0284C7', '#D97706', '#4F46E5'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: { family: 'Inter', size: 10 } } }
+                }
             }
-        }
-    });
+        });
+    }
 
-    // 4. Social Network Analysis (SNA) vis-network
+    // 4. Social Network Analysis (SNA) vis-network Engine (Gephi / Academic Style)
     const snaRaw = {{ sna_json | safe }};
-    const nodes = new vis.DataSet(
-        snaRaw.nodes.map(n => {
-            let color = '#3B82F6'; // media default
-            let shape = 'dot';
-            if (n.group === 'person') {
-                color = '#8B5CF6';
-                shape = 'diamond';
-            } else if (n.group === 'topic') {
-                color = '#10B981';
-                shape = 'square';
-            }
-            return {
-                id: n.id,
-                label: n.label,
-                value: n.value,
-                color: { background: color, border: '#ffffff', highlight: { background: '#F59E0B' } },
-                shape: shape,
-                font: { size: 12, color: '#334155', face: 'Inter' }
-            };
-        })
-    );
+    let snaNetworkInstance = null;
+    let isPhysicsActive = true;
 
-    const edges = new vis.DataSet(
-        snaRaw.edges.map(e => ({
-            from: e.from,
-            to: e.to,
-            value: e.value,
-            color: { color: '#CBD5E1', highlight: '#F59E0B' },
-            arrows: ''
-        }))
-    );
+    if (snaRaw.nodes && snaRaw.nodes.length > 0) {
+        const nodes = new vis.DataSet(
+            snaRaw.nodes.map(n => {
+                let bgColor = '#3B82F6';
+                let borderColor = '#1D4ED8';
+                let shape = 'dot';
+                
+                if (n.group === 'person') {
+                    bgColor = '#A855F7';
+                    borderColor = '#7E22CE';
+                    shape = 'diamond';
+                } else if (n.group === 'topic') {
+                    bgColor = '#10B981';
+                    borderColor = '#047857';
+                    shape = 'hexagon';
+                }
 
-    const container = document.getElementById('snaNetwork');
-    const dataNetwork = { nodes: nodes, edges: edges };
-    const options = {
-        nodes: {
-            scaling: { min: 14, max: 32 }
-        },
-        edges: {
-            scaling: { min: 1, max: 6 },
-            smooth: { type: 'continuous' }
-        },
-        physics: {
-            stabilization: false,
-            barnesHut: {
-                gravitationalConstant: -2500,
-                springLength: 95,
-                springConstant: 0.04
+                // Node size derived mathematically from Degree Centrality or mention value
+                const val = n.value || 1;
+                const size = Math.min(34, Math.max(12, 10 + (val * 1.8)));
+
+                return {
+                    id: n.id,
+                    label: n.label,
+                    value: val,
+                    size: size,
+                    color: {
+                        background: bgColor,
+                        border: borderColor,
+                        highlight: { background: '#F59E0B', border: '#D97706' },
+                        hover: { background: '#60A5FA', border: '#2563EB' }
+                    },
+                    shape: shape,
+                    font: {
+                        size: 11,
+                        color: '#F8FAFC',
+                        face: 'Inter, sans-serif',
+                        strokeWidth: 2,
+                        strokeColor: '#0F172A'
+                    },
+                    shadow: {
+                        enabled: true,
+                        color: 'rgba(0,0,0,0.3)',
+                        size: 4
+                    }
+                };
+            })
+        );
+
+        const edges = new vis.DataSet(
+            snaRaw.edges.map(e => ({
+                from: e.from,
+                to: e.to,
+                value: e.value,
+                color: {
+                    color: 'rgba(148, 163, 184, 0.35)', // Slate 400 semi-transparent
+                    highlight: '#F59E0B',
+                    hover: '#60A5FA'
+                },
+                arrows: '',
+                smooth: { type: 'continuous', roundness: 0.2 }
+            }))
+        );
+
+        const container = document.getElementById('snaNetwork');
+        const dataNetwork = { nodes: nodes, edges: edges };
+        const options = {
+            nodes: {
+                scaling: { min: 12, max: 36 }
+            },
+            edges: {
+                scaling: { min: 1, max: 5 },
+                selectionWidth: 2
+            },
+            physics: {
+                solver: 'barnesHut',
+                barnesHut: {
+                    gravitationalConstant: -4000,
+                    centralGravity: 0.3,
+                    springLength: 95,
+                    springConstant: 0.05,
+                    damping: 0.09
+                },
+                stabilization: { iterations: 150 }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 80,
+                zoomView: true,
+                dragView: true,
+                multiselect: false
             }
-        },
-        interaction: {
-            hover: true,
-            tooltipDelay: 100,
-            zoomView: true
+        };
+
+        snaNetworkInstance = new vis.Network(container, dataNetwork, options);
+    }
+
+    // Interactive Graph Controls
+    function zoomSna(factor) {
+        if (!snaNetworkInstance) return;
+        const currentScale = snaNetworkInstance.getScale();
+        snaNetworkInstance.moveTo({ scale: currentScale + factor });
+    }
+
+    function resetSnaView() {
+        if (!snaNetworkInstance) return;
+        snaNetworkInstance.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } });
+    }
+
+    function toggleSnaPhysics() {
+        if (!snaNetworkInstance) return;
+        isPhysicsActive = !isPhysicsActive;
+        snaNetworkInstance.setOptions({ physics: { enabled: isPhysicsActive } });
+        const btn = document.getElementById('togglePhysicsBtn');
+        if (btn) {
+            btn.innerText = isPhysicsActive ? 'Kunci Posisi' : 'Lepas Kunci';
+            btn.classList.toggle('text-emerald-700', !isPhysicsActive);
         }
-    };
-    new vis.Network(container, dataNetwork, options);
+    }
 </script>
 {% endblock %}

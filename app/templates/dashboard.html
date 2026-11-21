@@ -5,54 +5,61 @@
 {% block content %}
 <div class="space-y-6">
 
-    <!-- Header & Keterangan Metrik Drone Emprit -->
-    <div class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-6 rounded-2xl shadow-md border border-emerald-800/40">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-2 mb-1.5">
-                    <span class="text-xs uppercase tracking-widest font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-400/30">
-                        🦅 Media Intelligence & Social Network Analysis (SNA)
+    <!-- Executive Header (Professional Media Intelligence Style) -->
+    <div class="bg-white border border-slate-200/90 rounded-xl p-6 shadow-xs">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+            <div class="space-y-1.5">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-900 text-slate-100 uppercase tracking-wider">
+                        Sistem Monitoring Publikasi
                     </span>
-                    <span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Replikasi Drone Emprit</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                        Media & Public Opinion Intelligence
+                    </span>
+                    <span class="text-[11px] text-slate-400 font-mono">
+                        UIN Sunan Kudus
+                    </span>
                 </div>
-                <h1 class="text-2xl font-bold tracking-tight">Sistem Monitoring Publikasi & Opini Media — UIN Sunan Kudus</h1>
-                <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                    Pemantauan netral terintegrasi: mengukur reputasi institusi melalui <em>Net Sentiment Score</em> (NSS), persebaran <em>Share of Voice</em> (SoV), tren volume pemberitaan, dan jejaring relasi media-dosen-isu.
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                    Monitoring Publikasi, Reputasi & Topologi Isu Media
+                </h1>
+                <p class="text-xs text-slate-500 max-w-3xl leading-relaxed">
+                    Pengukuran terintegrasi sentimen pemberitaan, sebaran sebutan (Share of Voice), dan Social Network Analysis (SNA) aktor serta media massa lokal dan nasional.
                 </p>
             </div>
-            <div class="flex flex-col gap-2 items-end">
+            
+            <!-- Crawl & Deep Search Control Bar -->
+            <div class="flex flex-col gap-2.5 items-start lg:items-end shrink-0">
                 <div class="flex flex-wrap items-center gap-2">
-                    <form action="/crawl/trigger" method="POST" id="quickCrawlForm" class="flex items-center gap-1">
-                        <input type="text" id="crawlKeywordInput" name="keyword" value="KKN UIN Sunan Kudus" class="text-xs bg-slate-800 border border-slate-700 text-white rounded-lg px-2.5 py-2 w-44 focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Kata kunci...">
+                    <form action="/crawl/trigger" method="POST" id="quickCrawlForm" class="flex items-center gap-1.5">
+                        <input type="text" id="crawlKeywordInput" name="keyword" value="KKN UIN Sunan Kudus" class="text-xs bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 w-44 focus:ring-2 focus:ring-slate-800 focus:outline-none" placeholder="Cari topik...">
                         <input type="hidden" name="max_items" value="10">
-                        <button type="submit" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm transition" title="Cari berita terkini">
-                            ⚡ Crawl
+                        <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg font-medium shadow-2xs transition">
+                            Crawl
                         </button>
                     </form>
                     <form action="/deep-search/trigger" method="POST">
                         <input type="hidden" name="max_items" value="60">
-                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg font-semibold shadow-sm transition flex items-center gap-1.5" title="Mencakup Google News, Kompasiana, Kemenag, Muria, KKN, Jurnal, dan riwayat 2 tahun">
-                            🔍 Deep Search Lengkap (2 Tahun + KKN & Kompasiana)
+                        <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs px-3.5 py-1.5 rounded-lg font-semibold shadow-2xs transition flex items-center gap-1.5">
+                            Deep Search (2 Tahun)
                         </button>
                     </form>
                 </div>
-                <!-- Quick Keyword Presets -->
+                
+                <!-- Quick Filter Presets -->
                 <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
-                    <span class="text-slate-400">Pencarian Cepat:</span>
-                    <button type="button" onclick="setQuickKeyword('KKN UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-emerald-300 hover:text-white px-2 py-0.5 rounded border border-emerald-500/30 transition">
-                        🌾 KKN UIN Kudus
+                    <span class="text-slate-400">Pilihan Cepat:</span>
+                    <button type="button" onclick="setQuickKeyword('KKN UIN Sunan Kudus')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">
+                        KKN UIN Kudus
                     </button>
-                    <button type="button" onclick="setQuickKeyword('KKN IAIN Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-emerald-300 hover:text-white px-2 py-0.5 rounded border border-emerald-500/30 transition">
-                        🌾 KKN IAIN Kudus
+                    <button type="button" onclick="setQuickKeyword('site:kompasiana.com UIN Sunan Kudus')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">
+                        Kompasiana (KKN/Dosen)
                     </button>
-                    <button type="button" onclick="setQuickKeyword('site:kompasiana.com UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-amber-300 hover:text-white px-2 py-0.5 rounded border border-amber-500/30 transition">
-                        ✍️ Kompasiana KKN/Dosen
+                    <button type="button" onclick="setQuickKeyword('Jurnal UIN Sunan Kudus')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">
+                        Jurnal & Riset
                     </button>
-                    <button type="button" onclick="setQuickKeyword('Jurnal UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-sky-300 hover:text-white px-2 py-0.5 rounded border border-sky-500/30 transition">
-                        📚 Jurnal & Riset
-                    </button>
-                    <button type="button" onclick="setQuickKeyword('Wisuda UIN Sunan Kudus')" class="bg-slate-800/80 hover:bg-emerald-700/80 text-purple-300 hover:text-white px-2 py-0.5 rounded border border-purple-500/30 transition">
-                        🎓 Wisuda
+                    <button type="button" onclick="setQuickKeyword('Wisuda UIN Sunan Kudus')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">
+                        Wisuda
                     </button>
                 </div>
             </div>
@@ -61,17 +68,17 @@
 
     <!-- Alert Isu Sensitif (Jika Ada) -->
     {% if total_sensitive > 0 %}
-    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl shadow-sm">
+    <div class="bg-amber-50/70 border-l-4 border-amber-500 p-4 rounded-r-xl shadow-xs">
         <div class="flex items-start">
-            <span class="text-2xl mr-3">⚠️</span>
+            <span class="text-lg mr-3 text-amber-600 font-bold font-mono">!</span>
             <div class="flex-1">
-                <h3 class="text-sm font-semibold text-amber-900">Perhatian: Terdeteksi {{ total_sensitive }} Berita Berisu Sensitif</h3>
-                <p class="text-xs text-amber-700 mt-0.5">Sistem memonitor isu berisiko (SARA, kekerasan seksual, demonstrasi) secara netral dan transparan.</p>
+                <h3 class="text-xs font-bold text-amber-900 uppercase tracking-wide">Pemberitahuan: {{ total_sensitive }} Berita Berpotensi Isu Sensitif</h3>
+                <p class="text-[11px] text-amber-700 mt-0.5">Sistem memonitor isu berisiko (SARA, kekerasan, regulasi, unjuk rasa) secara objektif.</p>
                 <div class="mt-2 space-y-1">
                     {% for item in sensitive_articles %}
                     <div class="text-xs text-amber-950 flex items-center justify-between">
-                        <span>&bull; <strong>[{{ item.sensitive_category|upper }}]</strong> {{ item.title }} (<em>{{ item.source_name }}</em>)</span>
-                        <a href="{{ item.url }}" target="_blank" class="text-amber-700 underline hover:text-amber-900 ml-2">Buka</a>
+                        <span>&bull; <strong class="uppercase font-mono text-[10px]">[{{ item.sensitive_category }}]</strong> {{ item.title }} (<em>{{ item.source_name }}</em>)</span>
+                        <a href="{{ item.url }}" target="_blank" class="text-amber-800 underline hover:text-amber-950 ml-2">Lihat Sumber ↗</a>
                     </div>
                     {% endfor %}
                 </div>
@@ -80,241 +87,301 @@
     </div>
     {% endif %}
 
-    <!-- 5 Kotak Metrik Utama Ala Drone Emprit -->
+    <!-- 5 Performance Metric Cards -->
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5">
         <!-- NSS Card -->
-        <div class="bg-white p-4 rounded-xl border border-indigo-100 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Net Sentiment (NSS)</span>
-                <span class="text-base">⚖️</span>
+        <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between text-xs text-slate-500">
+                <span class="font-semibold uppercase tracking-wider text-[11px]">Net Sentiment (NSS)</span>
+                <span class="font-mono text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded">Indeks</span>
             </div>
-            <div class="mt-1 flex items-baseline gap-1.5">
-                <span class="text-2xl font-extrabold {% if nss > 0 %}text-emerald-600{% elif nss < 0 %}text-rose-600{% else %}text-slate-700{% endif %}">
+            <div class="mt-1.5 flex items-baseline gap-1.5">
+                <span class="text-2xl font-bold font-mono {% if nss > 0 %}text-emerald-700{% elif nss < 0 %}text-rose-700{% else %}text-slate-700{% endif %}">
                     {% if nss > 0 %}+{% endif %}{{ nss }}%
                 </span>
-                <span class="text-[10px] font-medium text-slate-400">Favorability</span>
+                <span class="text-[10px] text-slate-400">Favorability</span>
             </div>
-            <p class="text-[10px] text-slate-400 mt-1">Rumus: <code>(Pos - Neg)/Total</code></p>
+            <p class="text-[10px] text-slate-400 mt-1 font-mono">(Pos - Neg) / Total</p>
         </div>
 
         <!-- Total Mentions -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Berita</span>
-                <span class="text-base">📢</span>
+        <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between text-xs text-slate-500">
+                <span class="font-semibold uppercase tracking-wider text-[11px]">Total Berita</span>
+                <span class="font-mono text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded">Volume</span>
             </div>
-            <div class="mt-1 text-2xl font-extrabold text-slate-800">
+            <div class="mt-1.5 text-2xl font-bold font-mono text-slate-900">
                 {{ total_articles }}
             </div>
-            <p class="text-[10px] text-slate-400 mt-1">18 portal media online & cetak</p>
+            <p class="text-[10px] text-slate-400 mt-1">18 portal media online</p>
         </div>
 
         <!-- Komposisi Sentimen -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm col-span-2 md:col-span-1">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Sentimen</span>
-                <span class="text-base">📊</span>
+        <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-xs col-span-2 md:col-span-1">
+            <div class="flex items-center justify-between text-xs text-slate-500">
+                <span class="font-semibold uppercase tracking-wider text-[11px]">Sentimen</span>
+                <span class="font-mono text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded">Rasio</span>
             </div>
-            <div class="mt-1 flex items-center gap-1 text-[11px] font-semibold">
+            <div class="mt-1.5 flex items-center gap-1.5 text-[10px] font-semibold font-mono">
                 <span class="text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">{{ total_positive }} Pos</span>
-                <span class="text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">{{ total_neutral }} Net</span>
+                <span class="text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">{{ total_neutral }} Net</span>
                 <span class="text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded">{{ total_negative }} Neg</span>
             </div>
             <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-2 flex">
                 {% set tot = total_articles if total_articles > 0 else 1 %}
-                <div style="width: {{ (total_positive / tot * 100)|round }}%" class="bg-emerald-500 h-full"></div>
+                <div style="width: {{ (total_positive / tot * 100)|round }}%" class="bg-emerald-600 h-full"></div>
                 <div style="width: {{ (total_neutral / tot * 100)|round }}%" class="bg-slate-400 h-full"></div>
-                <div style="width: {{ (total_negative / tot * 100)|round }}%" class="bg-rose-500 h-full"></div>
+                <div style="width: {{ (total_negative / tot * 100)|round }}%" class="bg-rose-600 h-full"></div>
             </div>
         </div>
 
         <!-- Tokoh Dosen Teridentifikasi -->
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dosen Terpapar</span>
-                <span class="text-base">🎓</span>
+        <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between text-xs text-slate-500">
+                <span class="font-semibold uppercase tracking-wider text-[11px]">Dosen Terpapar</span>
+                <span class="font-mono text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded">Aktor</span>
             </div>
-            <div class="mt-1 text-2xl font-extrabold text-indigo-600">
-                {{ emprit_data.top_figures|length }} <span class="text-xs text-slate-400 font-normal">tokoh</span>
+            <div class="mt-1.5 text-2xl font-bold font-mono text-indigo-700">
+                {{ emprit_data.top_figures|length }}
             </div>
-            <p class="text-[10px] text-slate-400 mt-1">Basis 286 nama dosen & pimpinan</p>
+            <p class="text-[10px] text-slate-400 mt-1">286 Dosen & Pimpinan</p>
         </div>
 
         <!-- Instagram Stats -->
-        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-sm">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-purple-600 uppercase tracking-wider">Instagram</span>
-                <span class="text-base">📱</span>
+        <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between text-xs text-slate-500">
+                <span class="font-semibold uppercase tracking-wider text-[11px]">Instagram Resmi</span>
+                <span class="font-mono text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded">Sosmed</span>
             </div>
-            <div class="mt-1 text-2xl font-extrabold text-purple-700">
-                {{ total_ig_posts }} <span class="text-xs text-slate-400 font-normal">post</span>
+            <div class="mt-1.5 text-2xl font-bold font-mono text-purple-700">
+                {{ total_ig_posts }}
             </div>
-            <p class="text-[10px] text-slate-400 mt-1">{{ total_ig_comments }} Komentar di IG resmi</p>
+            <p class="text-[10px] text-slate-400 mt-1">{{ total_ig_comments }} Komentar Terdata</p>
         </div>
     </div>
 
-    <!-- Social Network Analysis (SNA) Graph Interaktif (Drone Emprit Core) -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+    <!-- Social Network Analysis (SNA) Main Section -->
+    <div class="bg-white border border-slate-200/90 rounded-xl shadow-xs overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-slate-200/80 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    🕸️ Social Network Analysis (SNA): Jejaring Media, Tokoh Dosen, & Topik Berita
-                </h3>
-                <p class="text-xs text-slate-500">
-                    Pemetaan topologi interaktif ala Drone Emprit. Titik menghubungkan <strong>Portal Media</strong>, <strong>Dosen / Tokoh</strong>, dan <strong>Topik Berita</strong>. Anda dapat zoom, geser (drag), atau hover titik untuk melihat derajat keterkaitan.
+                <div class="flex items-center gap-2">
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                        Social Network Analysis (SNA): Jejaring Media, Tokoh & Topik Isu
+                    </h2>
+                    <span class="text-[10px] bg-slate-200 text-slate-700 font-mono px-1.5 py-0.5 rounded">ForceAtlas2 Layout</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Hubungan interaktif antara <strong>Portal Media</strong>, <strong>Aktor Dosen</strong>, dan <strong>Topik Berita</strong>.
                 </p>
             </div>
-            <!-- Legenda SNA -->
-            <div class="flex items-center gap-3 text-xs bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
-                <span class="inline-flex items-center gap-1.5 font-medium text-slate-700"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Media</span>
-                <span class="inline-flex items-center gap-1.5 font-medium text-slate-700"><span class="w-3 h-3 rounded-full bg-purple-500"></span> Dosen / Tokoh</span>
-                <span class="inline-flex items-center gap-1.5 font-medium text-slate-700"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Topik Isu</span>
+            <!-- Interactivity Controls & Legend -->
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="flex items-center gap-2 text-[11px] bg-white px-2.5 py-1 rounded-lg border border-slate-200">
+                    <span class="inline-flex items-center gap-1 font-medium text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> Media
+                    </span>
+                    <span class="inline-flex items-center gap-1 font-medium text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-sm bg-purple-600"></span> Dosen
+                    </span>
+                    <span class="inline-flex items-center gap-1 font-medium text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Topik Isu
+                    </span>
+                </div>
+                <div class="inline-flex items-center bg-white rounded-lg border border-slate-200 divide-x divide-slate-200 text-xs">
+                    <button type="button" onclick="zoomSna(0.3)" class="px-2 py-1 text-slate-700 hover:bg-slate-50 font-medium">Zoom +</button>
+                    <button type="button" onclick="zoomSna(-0.3)" class="px-2 py-1 text-slate-700 hover:bg-slate-50 font-medium">Zoom -</button>
+                    <button type="button" onclick="resetSnaView()" class="px-2 py-1 text-slate-700 hover:bg-slate-50 font-medium">Reset</button>
+                </div>
             </div>
         </div>
-        <div id="snaNetwork" class="w-full h-[420px] border border-slate-200 rounded-xl bg-slate-50/50"></div>
-        <div class="flex items-center justify-between text-[11px] text-slate-400 italic">
-            <span>*Besar ukuran node dihitung dengan algoritma <em>Degree Centrality</em> (NetworkX).</span>
-            <span>*Ketebalan garis menunjukkan frekuensi peliputan bersama.</span>
+        <div class="relative bg-slate-900 w-full">
+            <div id="snaNetwork" class="w-full h-[460px]"></div>
+            <div class="absolute bottom-3 left-3 bg-slate-950/80 backdrop-blur border border-slate-700/60 text-slate-300 text-[11px] px-3 py-1.5 rounded-lg shadow-sm">
+                <span>Navigasi: Scroll mouse untuk zoom, seret node untuk memindahkan titik.</span>
+            </div>
+        </div>
+        <div class="p-3 bg-slate-50 border-t border-slate-200/80 text-[11px] text-slate-500 flex items-center justify-between">
+            <span>*Besar ukuran node dihitung matematis dari <em>Degree Centrality</em> (NetworkX).</span>
+            <span>*Warna node merepresentasikan kelompok komunitas.</span>
         </div>
     </div>
 
-    <!-- Grafik Tren Mentions dari Waktu ke Waktu (Volume Over Time) -->
-    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
+    <!-- Timeline Trends & Share of Voice Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Timeline Trends (Volume Over Time) - Spans 2 Cols -->
+        <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                        Tren Volume Pemberitaan per Waktu (Volume Over Time)
+                    </h2>
+                    <p class="text-xs text-slate-500">Distribusi intensitas peliputan bulanan berdasarkan sentimen.</p>
+                </div>
+                <div class="flex items-center gap-3 text-xs">
+                    <span class="inline-flex items-center gap-1.5 text-slate-600 font-medium">
+                        <span class="w-2.5 h-2.5 rounded-xs bg-emerald-600"></span> Positif
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-600 font-medium">
+                        <span class="w-2.5 h-2.5 rounded-xs bg-slate-400"></span> Netral
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 text-slate-600 font-medium">
+                        <span class="w-2.5 h-2.5 rounded-xs bg-rose-600"></span> Negatif
+                    </span>
+                </div>
+            </div>
+            <div class="h-64 sm:h-72 w-full">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Entity Benchmark (Share of Voice Transformasi Brand) -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
             <div>
-                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                    📈 Tren Pemberitaan & Sentimen dari Waktu ke Waktu (Volume Over Time)
-                </h3>
-                <p class="text-xs text-slate-500">Distribusi intensitas pemberitaan bulanan yang dipisah berdasarkan sentimen positif, netral, dan negatif.</p>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                    Share of Voice (SoV) Entitas Kampus
+                </h2>
+                <p class="text-xs text-slate-500 mb-4">Proporsi sebutan institusi (UIN vs IAIN vs STAIN vs Dosen).</p>
+                <div class="h-48 flex items-center justify-center">
+                    <canvas id="entitySovChart"></canvas>
+                </div>
             </div>
-            <div class="flex items-center gap-2 text-xs">
-                <span class="inline-flex items-center gap-1 text-emerald-700 font-medium"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Positif</span>
-                <span class="inline-flex items-center gap-1 text-slate-600 font-medium"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Netral</span>
-                <span class="inline-flex items-center gap-1 text-rose-700 font-medium"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Negatif</span>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
+                {% for ent in emprit_data.entity_sov %}
+                <div class="flex items-center justify-between">
+                    <span class="font-medium text-slate-700">{{ ent.name }}</span>
+                    <span class="font-mono text-slate-500">{{ ent.count }} sebutan</span>
+                </div>
+                {% endfor %}
             </div>
-        </div>
-        <div class="h-64">
-            <canvas id="timelineChart"></canvas>
         </div>
     </div>
 
-    <!-- Baris Share of Voice (SoV) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- SoV Media -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                🥧 Share of Voice (SoV) Media Pemberita
-            </h3>
-            <p class="text-xs text-slate-500 mb-4">Porsi publikasi berita berdasarkan portal media online yang paling aktif meliput.</p>
-            <div class="h-56 flex items-center justify-center">
+    <!-- Media Share of Voice & Key Opinion Leaders Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Media Share of Voice -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
+            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">
+                Pangsa Suara Media (Share of Voice Outlets)
+            </h2>
+            <p class="text-xs text-slate-500 mb-3">Porsi liputan berita berdasarkan portal media online teraktif.</p>
+            <div class="h-56 flex items-center justify-center my-2">
                 <canvas id="mediaSovChart"></canvas>
             </div>
+            <div class="divide-y divide-slate-100 text-xs mt-3 max-h-44 overflow-y-auto">
+                {% for m in emprit_data.media_sov %}
+                <div class="py-1.5 flex items-center justify-between">
+                    <span class="font-medium text-slate-800">{{ m.name }}</span>
+                    <div class="flex items-center gap-2 font-mono">
+                        <span class="text-slate-500">{{ m.count }} rilis</span>
+                        <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded text-[10px] font-semibold">{{ m.percent }}%</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
-        <!-- SoV Entitas Brand -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                🏷️ Share of Voice (SoV) Entitas Kampus
-            </h3>
-            <p class="text-xs text-slate-500 mb-4">Porsi kemunculan nama institusi dalam sejarah transformasi (UIN vs IAIN vs STAIN vs Tokoh).</p>
-            <div class="h-56 flex items-center justify-center">
-                <canvas id="entitySovChart"></canvas>
+        <!-- Key Opinion Figures (Tokoh Terbanyak Diliput) -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">
+                    Tokoh & Dosen Paling Banyak Diliput
+                </h2>
+                <p class="text-xs text-slate-500 mb-3">Sivitas akademika dengan eksposur media tertinggi.</p>
+                <div class="divide-y divide-slate-100 max-h-72 overflow-y-auto">
+                    {% for fig in emprit_data.top_figures %}
+                    <div class="py-2.5 flex items-center justify-between text-xs">
+                        <div class="space-y-0.5">
+                            <span class="font-semibold text-slate-900 block">{{ fig.name }}</span>
+                            <div class="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
+                                <span class="text-emerald-700 font-medium">+{{ fig.positif }} Pos</span>
+                                <span>&bull;</span>
+                                <span class="text-slate-600 font-medium">{{ fig.netral }} Net</span>
+                                <span>&bull;</span>
+                                <span class="text-rose-700 font-medium">-{{ fig.negatif }} Neg</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block bg-slate-900 text-white font-mono text-[11px] font-semibold px-2 py-0.5 rounded">
+                                {{ fig.total }} Berita
+                            </span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-slate-400 py-6 text-center">Belum ada figur dosen yang terdata secara otomatis.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400">
+                *Dihitung berdasarkan pencocokan nama entitas terkurasi pada isi dan judul artikel.
             </div>
         </div>
     </div>
 
-    <!-- Baris Top Keywords / Word Cloud & Top Figures -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Word Cloud / Trending Terms -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                ☁️ Kata Kunci Paling Sering Muncul (Trending Keywords)
-            </h3>
-            <p class="text-xs text-slate-500 mb-4">Kata kunci utama setelah penyaringan stopwords bahasa Indonesia.</p>
-            <div class="flex flex-wrap gap-2 p-3.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[180px] items-center justify-center">
-                {% for kw in emprit_data.top_keywords %}
-                    {% set font_size = 11 + (kw.count * 2) %}
-                    {% if font_size > 22 %}{% set font_size = 22 %}{% endif %}
-                    <span class="font-medium text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition cursor-default" style="font-size: {{ font_size }}px;">
-                        {{ kw.word }} <span class="text-[10px] text-slate-400">({{ kw.count }})</span>
-                    </span>
-                {% else %}
-                    <p class="text-xs text-slate-400">Belum ada kata kunci terekstraksi.</p>
-                {% endfor %}
+    <!-- Trending Terms & Word Frequency -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                    Kata Kunci & Topik Terhangat (Key Phrases)
+                </h2>
+                <p class="text-xs text-slate-500">Istilah yang paling sering muncul setelah penyaringan stopwords bahasa Indonesia.</p>
             </div>
+            <span class="text-[11px] text-slate-400 font-mono">25 Istilah Dominan</span>
         </div>
-
-        <!-- Key Opinion Figures (Top Dosen / Tokoh Paling Banyak Diberitakan) -->
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="text-sm font-bold text-slate-800 mb-1">
-                🏆 Key Opinion Figures (Dosen & Tokoh Terbanyak Diliput)
-            </h3>
-            <p class="text-xs text-slate-500 mb-3">Dosen & pimpinan kampus dengan eksposur media paling tinggi.</p>
-            <div class="divide-y divide-slate-100 max-h-[220px] overflow-y-auto">
-                {% for fig in emprit_data.top_figures %}
-                <div class="py-2.5 flex items-center justify-between text-xs">
-                    <div>
-                        <span class="font-bold text-slate-800">{{ fig.name }}</span>
-                        <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
-                            <span class="text-emerald-600 font-medium">+{{ fig.positif }}</span> &bull;
-                            <span class="text-slate-500 font-medium">{{ fig.netral }}</span> &bull;
-                            <span class="text-rose-600 font-medium">-{{ fig.negatif }}</span>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <span class="bg-indigo-50 text-indigo-700 font-bold px-2.5 py-1 rounded-lg">
-                            {{ fig.total }} Berita
-                        </span>
-                    </div>
+        <div class="flex flex-wrap gap-2 pt-2">
+            {% for kw in emprit_data.top_keywords %}
+                {% set weight = kw.count %}
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 bg-slate-50/70 hover:bg-slate-100 transition text-xs">
+                    <span class="font-medium text-slate-800">{{ kw.word }}</span>
+                    <span class="font-mono text-[10px] text-slate-600 bg-white border border-slate-200 px-1.5 py-0.2 rounded font-semibold">{{ weight }}</span>
                 </div>
-                {% else %}
-                <p class="text-xs text-slate-400 py-4">Belum ada data tokoh yang terpetakan secara otomatis.</p>
-                {% endfor %}
-            </div>
+            {% else %}
+                <p class="text-xs text-slate-400 py-4">Belum ada data kata kunci yang diekstraksi.</p>
+            {% endfor %}
         </div>
     </div>
 
     <!-- 10 Berita Terbaru Terpantau -->
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-4 border-b border-slate-200 flex justify-between items-center">
-            <h3 class="text-sm font-semibold text-slate-800">10 Berita Terbaru Terpantau</h3>
-            <a href="/articles" class="text-xs text-emerald-600 hover:text-emerald-700 font-medium">Lihat Semua Berita &rarr;</a>
+    <div class="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <div class="p-4 border-b border-slate-200/80 flex justify-between items-center">
+            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide">10 Berita Terbaru Terpantau</h3>
+            <a href="/articles" class="text-xs text-emerald-700 hover:text-emerald-800 font-medium">Buka Tabel Arsip Lengkap &rarr;</a>
         </div>
         <div class="divide-y divide-slate-100">
             {% for item in recent_articles %}
-            <div class="p-4 hover:bg-slate-50 transition">
+            <div class="p-4 hover:bg-slate-50/70 transition">
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-1">
-                            <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">{{ item.source_name }}</span>
-                            <span class="text-[11px] text-slate-400">{{ item.published_at.strftime('%d %b %Y %H:%M') if item.published_at else '-' }}</span>
+                            <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">{{ item.source_name }}</span>
+                            <span class="text-[11px] text-slate-400 font-mono">{{ item.published_at.strftime('%d %b %Y %H:%M') if item.published_at else '-' }}</span>
                             {% if item.sentiment == 'positif' %}
-                            <span class="text-[11px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Positif</span>
+                            <span class="text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200/50 px-2 py-0.2 rounded font-medium">Positif</span>
                             {% elif item.sentiment == 'negatif' %}
-                            <span class="text-[11px] bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-medium">Negatif</span>
+                            <span class="text-[11px] bg-rose-50 text-rose-700 border border-rose-200/50 px-2 py-0.2 rounded font-medium">Negatif</span>
                             {% else %}
-                            <span class="text-[11px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-medium">Netral</span>
+                            <span class="text-[11px] bg-slate-50 text-slate-600 border border-slate-200/50 px-2 py-0.2 rounded font-medium">Netral</span>
                             {% endif %}
                             {% if item.is_sensitive %}
-                            <span class="text-[11px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-medium">⚠️ {{ item.sensitive_category }}</span>
+                            <span class="text-[11px] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.2 rounded font-medium">Isu: {{ item.sensitive_category }}</span>
                             {% endif %}
                         </div>
-                        <a href="{{ item.url }}" target="_blank" class="text-sm font-medium text-slate-900 hover:text-emerald-700 leading-snug">
+                        <a href="{{ item.url }}" target="_blank" class="text-sm font-semibold text-slate-900 hover:text-emerald-700 leading-snug">
                             {{ item.title }} ↗
                         </a>
                         <p class="text-xs text-slate-500 mt-1 italic">{{ item.sentiment_reason or item.summary or '-' }}</p>
                     </div>
                     <form action="/articles/{{ item.id }}/delete" method="POST" onsubmit="return confirm('Hapus berita ini dari daftar?');" class="shrink-0">
                         <input type="hidden" name="redirect_url" value="/">
-                        <button type="submit" class="bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-800 border border-rose-200 px-2.5 py-1 rounded-md text-[11px] font-medium transition flex items-center gap-1" title="Hapus berita">
-                            🗑️ Hapus
+                        <button type="submit" class="bg-slate-100 hover:bg-rose-50 text-slate-500 hover:text-rose-700 border border-slate-200 hover:border-rose-200 px-2.5 py-1 rounded text-[11px] font-medium transition" title="Hapus berita">
+                            Hapus
                         </button>
                     </form>
                 </div>
             </div>
             {% else %}
             <div class="p-6 text-center text-xs text-slate-400">
-                Belum ada berita. Silakan klik tombol "Update" atau "Deep Search" di atas.
+                Belum ada berita. Silakan klik tombol "Crawl" atau "Deep Search" di atas.
             </div>
             {% endfor %}
         </div>
@@ -337,20 +404,20 @@
                     {
                         label: 'Positif',
                         data: timelineData.positif,
-                        backgroundColor: '#10B981',
-                        borderRadius: 4
+                        backgroundColor: '#059669',
+                        borderRadius: 3
                     },
                     {
                         label: 'Netral',
                         data: timelineData.netral,
                         backgroundColor: '#94A3B8',
-                        borderRadius: 4
+                        borderRadius: 3
                     },
                     {
                         label: 'Negatif',
                         data: timelineData.negatif,
-                        backgroundColor: '#F43F5E',
-                        borderRadius: 4
+                        backgroundColor: '#E11D48',
+                        borderRadius: 3
                     }
                 ]
             },
@@ -358,11 +425,11 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    x: { stacked: true, grid: { display: false } },
-                    y: { stacked: true, beginAtZero: true }
+                    x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Inter', size: 11 } } },
+                    y: { stacked: true, beginAtZero: true, grid: { color: '#F1F5F9' }, ticks: { font: { family: 'Inter', size: 11 } } }
                 },
                 plugins: {
-                    legend: { position: 'top', align: 'end' }
+                    legend: { display: false }
                 }
             }
         });
@@ -379,8 +446,8 @@
                 datasets: [{
                     data: mediaSovData.map(d => d.count),
                     backgroundColor: [
-                        '#059669', '#0284C7', '#6366F1', '#8B5CF6', '#EC4899',
-                        '#F59E0B', '#10B981', '#3B82F6', '#14B8A6', '#64748B', '#CBD5E1'
+                        '#0F172A', '#1E293B', '#334155', '#475569', '#64748B',
+                        '#0284C7', '#0369A1', '#059669', '#047857', '#6366F1', '#4F46E5'
                     ],
                     borderWidth: 2,
                     borderColor: '#ffffff'
@@ -389,9 +456,8 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } }
-                }
+                plugins: { legend: { display: false } },
+                cutout: '68%'
             }
         });
     }
@@ -406,7 +472,7 @@
                 labels: entitySovData.map(d => d.name),
                 datasets: [{
                     data: entitySovData.map(d => d.count),
-                    backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6'],
+                    backgroundColor: ['#047857', '#0284C7', '#D97706', '#4F46E5'],
                     borderWidth: 2,
                     borderColor: '#ffffff'
                 }]
@@ -415,34 +481,60 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } }
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: { family: 'Inter', size: 10 } } }
                 }
             }
         });
     }
 
-    // 4. Social Network Analysis (SNA) vis-network Interaktif
+    // 4. Social Network Analysis (SNA) vis-network Engine
     const snaRaw = {{ sna_json | safe }};
-    const container = document.getElementById('snaNetwork');
-    if (container && snaRaw.nodes && snaRaw.nodes.length > 0) {
+    let snaNetworkInstance = null;
+
+    if (snaRaw.nodes && snaRaw.nodes.length > 0) {
         const nodes = new vis.DataSet(
             snaRaw.nodes.map(n => {
-                let color = '#3B82F6'; // Media default
+                let bgColor = '#3B82F6';
+                let borderColor = '#1D4ED8';
                 let shape = 'dot';
+                
                 if (n.group === 'person') {
-                    color = '#8B5CF6';
+                    bgColor = '#A855F7';
+                    borderColor = '#7E22CE';
                     shape = 'diamond';
                 } else if (n.group === 'topic') {
-                    color = '#10B981';
-                    shape = 'square';
+                    bgColor = '#10B981';
+                    borderColor = '#047857';
+                    shape = 'hexagon';
                 }
+
+                const val = n.value || 1;
+                const size = Math.min(32, Math.max(12, 10 + (val * 1.6)));
+
                 return {
                     id: n.id,
                     label: n.label,
-                    value: n.value,
-                    color: { background: color, border: '#ffffff', highlight: { background: '#F59E0B' } },
+                    value: val,
+                    size: size,
+                    color: {
+                        background: bgColor,
+                        border: borderColor,
+                        highlight: { background: '#F59E0B', border: '#D97706' },
+                        hover: { background: '#60A5FA', border: '#2563EB' }
+                    },
                     shape: shape,
-                    font: { size: 12, color: '#334155', face: 'Inter' }
+                    font: {
+                        size: 11,
+                        color: '#F8FAFC',
+                        face: 'Inter, sans-serif',
+                        strokeWidth: 2,
+                        strokeColor: '#0F172A'
+                    },
+                    shadow: {
+                        enabled: true,
+                        color: 'rgba(0,0,0,0.3)',
+                        size: 4
+                    }
                 };
             })
         );
@@ -452,38 +544,54 @@
                 from: e.from,
                 to: e.to,
                 value: e.value,
-                color: { color: '#CBD5E1', highlight: '#F59E0B' },
-                arrows: ''
+                color: {
+                    color: 'rgba(148, 163, 184, 0.35)',
+                    highlight: '#F59E0B',
+                    hover: '#60A5FA'
+                },
+                arrows: '',
+                smooth: { type: 'continuous', roundness: 0.2 }
             }))
         );
 
+        const container = document.getElementById('snaNetwork');
         const dataNetwork = { nodes: nodes, edges: edges };
         const options = {
-            nodes: {
-                scaling: { min: 14, max: 32 }
-            },
-            edges: {
-                scaling: { min: 1, max: 6 },
-                smooth: { type: 'continuous' }
-            },
+            nodes: { scaling: { min: 12, max: 34 } },
+            edges: { scaling: { min: 1, max: 5 }, selectionWidth: 2 },
             physics: {
-                stabilization: false,
+                solver: 'barnesHut',
                 barnesHut: {
-                    gravitationalConstant: -2500,
+                    gravitationalConstant: -4000,
+                    centralGravity: 0.3,
                     springLength: 95,
-                    springConstant: 0.04
-                }
+                    springConstant: 0.05,
+                    damping: 0.09
+                },
+                stabilization: { iterations: 150 }
             },
             interaction: {
                 hover: true,
-                tooltipDelay: 100,
-                zoomView: true
+                tooltipDelay: 80,
+                zoomView: true,
+                dragView: true
             }
         };
-        new vis.Network(container, dataNetwork, options);
+
+        snaNetworkInstance = new vis.Network(container, dataNetwork, options);
     }
 
-    // Helper untuk tombol preset pencarian cepat (KKN, Kompasiana, Jurnal, Wisuda)
+    function zoomSna(factor) {
+        if (!snaNetworkInstance) return;
+        const currentScale = snaNetworkInstance.getScale();
+        snaNetworkInstance.moveTo({ scale: currentScale + factor });
+    }
+
+    function resetSnaView() {
+        if (!snaNetworkInstance) return;
+        snaNetworkInstance.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } });
+    }
+
     function setQuickKeyword(kw) {
         const inp = document.getElementById('crawlKeywordInput');
         if (inp) {
